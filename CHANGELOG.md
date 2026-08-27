@@ -1,5 +1,12 @@
 # Changelog
 
+## Phase 6A-R2 upload workflow — 2026-08-27
+
+- defined safe create-or-reuse provisioning for the private `dtvs-pilot-assets` bucket;
+- specified immutable run prefixes, upload manifests, receipts, SHA-256 download verification, and resume behavior;
+- prohibited source masters, audio, subtitles, hidden checks, keys, and secrets from task distribution;
+- added a 315 MiB Wrangler object gate with an explicit multipart escalation path.
+
 ## Worker Pack v0.1 implementation plan — 2026-08-27
 
 - added the Codex-executable architecture and phased development workflow;
