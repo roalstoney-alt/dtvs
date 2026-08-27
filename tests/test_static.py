@@ -21,6 +21,7 @@ class StaticContractTests(unittest.TestCase):
                     "spec/DTVS_SPEC_v0.2.2_ASYMMETRIC_VERIFIED_PIPELINE.md",
                     "docs/CODEX_WORKER_PACK_V0.1_IMPLEMENTATION_WORKFLOW_CN.md",
                     "docs/CODEX_R2_TASK_UPLOAD_WORKFLOW_CN.md",
+                    "docs/CODEX_PHASE6A_WEBM_TO_R2_EXECUTION_CN.md",
                     "pilot/METROPOLIS_20M_SINGLE_NODE.md",
                     "scripts/dtvs_pilot.py"]:
             self.assertTrue((ROOT / rel).exists(), rel)
@@ -39,6 +40,11 @@ class StaticContractTests(unittest.TestCase):
     def test_r2_workflow_keeps_bucket_private_and_excludes_master(self):
         text = (ROOT / "docs/CODEX_R2_TASK_UPLOAD_WORKFLOW_CN.md").read_text(encoding="utf-8")
         for required in ["dtvs-pilot-assets", "315 MiB", "upload_manifest.json", "upload_receipt.json", "启用 `r2.dev`", "未上传完整片源"]:
+            self.assertIn(required, text)
+
+    def test_webm_workflow_requires_local_source_and_freezes_subtitles(self):
+        text = (ROOT / "docs/CODEX_PHASE6A_WEBM_TO_R2_EXECUTION_CN.md").read_text(encoding="utf-8")
+        for required in ["BLOCKED_LOCAL_SOURCE_NOT_ACCESSIBLE", "SUBTITLE_PENDING", "source_20m_video_cfr.mkv", "PHASE_6A_SOURCE_AND_TASKS_VERIFIED", "PHASE_6B_R2_TASK_UPLOAD_VERIFIED"]:
             self.assertIn(required, text)
 
     def test_media_is_gitignored(self):
