@@ -1,0 +1,15 @@
+inputs/**
+!inputs/.gitkeep
+runs/**
+!runs/.gitkeep
+tools/**
+*.mp4
+*.mkv
+*.mov
+*.avi
+*.srt
+*.ass
+*.log
+__pycache__/
+.venv/
+
