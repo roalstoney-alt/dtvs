@@ -61,6 +61,41 @@ class WindowsLauncherTests(unittest.TestCase):
         ]:
             self.assertIn(marker, self.ps1)
 
+    def test_external_handoff_manifest_signature_mapping(self):
+        for marker in [
+            "DTVS-P001-OFFLINE-HANDOFF_manifest.json",
+            "DTVS-P001-OFFLINE-HANDOFF_manifest.sig",
+            "HANDOFF_EXTERNAL_MANIFEST_MISSING",
+            "HANDOFF_EXTERNAL_SIGNATURE_MISSING",
+            "HANDOFF_PUBLIC_KEY_MISSING",
+            "HANDOFF_EXTERNAL_SIGNATURE_INVALID",
+            "HANDOFF_SIGNATURE_TARGET_MISMATCH",
+            "HANDOFF_EXTERNAL_MANIFEST_SIGNATURE_VERIFIED",
+            "task_index.json",
+            "Ed25519PublicKey",
+            "dumps(manifest)",
+        ]:
+            self.assertIn(marker, self.ps1)
+        self.assertNotIn("verify(base64.b64decode(handoff_sig),dumps(hm))", self.ps1)
+
+    def test_recovery_directory_has_no_attestation_and_complete_hash_manifest(self):
+        recovery = ROOT / "dist" / "DTVS-PILOT-VERIFIED-RECOVERY"
+        self.assertTrue(recovery.is_dir())
+        self.assertFalse(list(recovery.glob("*attestation*")))
+        self.assertEqual(len(list(recovery.iterdir())), 12)
+        sums = {}
+        for line in (recovery / "RECOVERY_SHA256SUMS.txt").read_text(encoding="ascii").splitlines():
+            digest, name = line.split(maxsplit=1)
+            sums[name] = digest
+        self.assertEqual(len(sums), 11)
+        for name, digest in sums.items():
+            self.assertEqual(digest, hashlib.sha256((recovery / name).read_bytes()).hexdigest())
+        manifest = __import__("json").loads((recovery / "RECOVERY_MANIFEST.json").read_text())
+        self.assertEqual(manifest["handoff_signature_mapping"]["signed_file"], "DTVS-P001-OFFLINE-HANDOFF_manifest.json")
+        self.assertEqual(manifest["handoff_signature_mapping"]["verification_status"], "PASS")
+        self.assertEqual(manifest["worker"]["sha256"], "76233a8a4d47dc9bfca9a682cbdd8fc383182d6f5a5e4b39c2b1785a57208a9d")
+        self.assertEqual(manifest["handoff"]["sha256"], "4d282bfd935cb6c6ac4d46007eddd19e94ca2c4cb0e7302f3672118f4cf81cdf")
+
     def test_doctor_policy_and_real_report_fields(self):
         for marker in [
             "dtvs-worker.ps1", "doctor", "doctor-latest.json", "Gyan.FFmpeg", "winget install --id Gyan.FFmpeg --source winget",

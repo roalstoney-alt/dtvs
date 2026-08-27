@@ -31,3 +31,4 @@ keys/
 *.pem
 *.key
 .DS_Store
+dist/DTVS-PILOT-VERIFIED-RECOVERY/

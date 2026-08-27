@@ -262,6 +262,63 @@ print(json.dumps({"ok": True, "run_id": assignment["run_id"], "task_count": len(
   Write-LauncherEvent "HANDOFF_SIGNATURES_VERIFIED_BY_WORKER" @{ tasks = $verify.task_count; run_id = $verify.run_id }
 }
 
+function Invoke-ExternalHandoffManifestVerify {
+  param([System.IO.FileInfo]$WorkerScript)
+  $manifestPath = Join-Path $Root "DTVS-P001-OFFLINE-HANDOFF_manifest.json"
+  $signaturePath = Join-Path $Root "DTVS-P001-OFFLINE-HANDOFF_manifest.sig"
+  if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
+    Stop-DTVS 23 "post_extract" "HANDOFF_EXTERNAL_MANIFEST_MISSING"
+  }
+  if (-not (Test-Path -LiteralPath $signaturePath -PathType Leaf)) {
+    Stop-DTVS 23 "post_extract" "HANDOFF_EXTERNAL_SIGNATURE_MISSING"
+  }
+  $taskIndex = Find-OneExtracted $HandoffRoot "task_index.json" "TASK_INDEX"
+  $python = Find-WorkerPython $WorkerScript
+  $scriptRoot = Split-Path -Parent $WorkerScript.FullName
+  $code = @'
+import base64
+import hashlib
+import json
+import sys
+from pathlib import Path
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+from dtvs.common.canonical_json import dumps
+
+manifest_path, signature_path, task_index_path, zip_path = map(Path, sys.argv[1:])
+manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+task_index = json.loads(task_index_path.read_text(encoding="utf-8"))
+public_key_b64 = task_index.get("public_key")
+if not public_key_b64:
+    raise ValueError("HANDOFF_PUBLIC_KEY_MISSING")
+signature_text = signature_path.read_text(encoding="ascii").strip()
+signature = base64.b64decode(signature_text, validate=True)
+if len(signature) != 64:
+    raise ValueError("HANDOFF_EXTERNAL_SIGNATURE_INVALID")
+public_key = Ed25519PublicKey.from_public_bytes(base64.b64decode(public_key_b64))
+public_key.verify(signature, dumps(manifest))
+actual_hash = hashlib.sha256(zip_path.read_bytes()).hexdigest()
+if manifest.get("package") != zip_path.name or manifest.get("sha256") != actual_hash:
+    raise ValueError("HANDOFF_SIGNATURE_TARGET_MISMATCH")
+print(json.dumps({"ok": True, "algorithm": "Ed25519", "signature_bytes": len(signature)}))
+'@
+  $zip = Get-Item -LiteralPath (Join-Path $Root "DTVS-P001-OFFLINE-HANDOFF.zip")
+  Push-Location $scriptRoot
+  try {
+    $output = & $python -c $code $manifestPath $signaturePath $taskIndex.FullName $zip.FullName 2>&1
+    $exitCode = $LASTEXITCODE
+  } finally {
+    Pop-Location
+  }
+  if ($exitCode -ne 0) {
+    $message = ($output -join [Environment]::NewLine)
+    if ($message -match "HANDOFF_PUBLIC_KEY_MISSING") { Stop-DTVS 23 "post_extract" "HANDOFF_PUBLIC_KEY_MISSING" }
+    if ($message -match "HANDOFF_SIGNATURE_TARGET_MISMATCH") { Stop-DTVS 23 "post_extract" "HANDOFF_SIGNATURE_TARGET_MISMATCH" }
+    Stop-DTVS 23 "post_extract" "HANDOFF_EXTERNAL_SIGNATURE_INVALID"
+  }
+  Write-LauncherEvent "HANDOFF_EXTERNAL_MANIFEST_SIGNATURE_VERIFIED" @{ algorithm = "Ed25519"; signature_bytes = 64 }
+  Write-Host "HANDOFF_EXTERNAL_MANIFEST_SIGNATURE_VERIFIED"
+}
+
 function Test-HandoffPostExtract {
   param([System.IO.FileInfo]$WorkerScript)
   $packageRoot = Find-HandoffPackageRoot
@@ -583,6 +640,7 @@ try {
   Expand-SafeZip $files.worker_zip $WorkerRoot "worker" $workerHash
   Expand-SafeZip $files.handoff_zip $HandoffRoot "handoff" $handoffHash
   $workerPs1 = Find-WorkerScript
+  Invoke-ExternalHandoffManifestVerify $workerPs1
   $handoffPackageRoot = Test-HandoffPostExtract $workerPs1
   $doctorData = Invoke-WorkerDoctor $workerPs1
 
