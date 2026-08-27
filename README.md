@@ -21,6 +21,8 @@ The first evidence unit is a 20-minute classic-film restoration on one RTX 4060 
 
 Read [the Pilot runbook](pilot/METROPOLIS_20M_SINGLE_NODE.md), the original [single-node baseline](spec/DTVS_SPEC_v0.2.1_SINGLE_NODE_PILOT.md), and the current frozen [Spec v0.2.2](spec/DTVS_SPEC_v0.2.2_ASYMMETRIC_VERIFIED_PIPELINE.md).
 
+Implementation work for Worker Pack v0.1 and the 20-minute v0.2.2 Pilot is defined in the [Codex implementation workflow](docs/CODEX_WORKER_PACK_V0.1_IMPLEMENTATION_WORKFLOW_CN.md).
+
 ## Frozen v0.2.2 pipeline
 
 The coordinator freezes the source, compiles scene-aware Task Bundles, creates public and hidden verification points, and signs every assignment. A Worker Pack verifies the bundle, performs deterministic restoration, checkpoints progress, and applies local upload gates. `LAS >= 90` permits upload but **does not mean final acceptance**. The cloud verifies every submission, samples hidden checks, and only `ACCEPTED` core-frame results may be merged. Audio and Chinese subtitles are applied centrally after video merge.
