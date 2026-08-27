@@ -1,5 +1,12 @@
 # Changelog
 
+## Worker Pack v0.1 implementation plan — 2026-08-27
+
+- added the Codex-executable architecture and phased development workflow;
+- separated Coordinator, Worker, Cloud Verifier, and Merger modules;
+- defined schemas, CLI, test matrix, fault injection, reporting, and final acceptance gates;
+- preserved the v0.2.1 monolithic runner as a characterization baseline.
+
 ## v0.2.2-spec-freeze — 2026-08-27
 
 - froze the coordinator → Worker Pack → cloud verifier → central merge responsibility chain;
