@@ -13,5 +13,14 @@ K:\dtvs\START_DTVS_PILOT.cmd
 
 启动器会要求输入两个已知 SHA-256，完成三方 Hash 校验后才解压、Doctor、执行或恢复、导出离线回传包。
 
-终端 Worker 最高状态为 READY_FOR_RETURN，不能生成 ACCEPTED。
+可先执行无媒体、无 Doctor、无 Worker 的启动器自检：
 
+K:\dtvs\run_dtvs_offline_pilot.ps1 -SelfTest
+
+可执行完整验证（包含 Doctor，但不会开始渲染）：
+
+K:\dtvs\run_dtvs_offline_pilot.ps1 -VerifyOnly
+
+PowerShell 源码使用 UTF-8 BOM，以兼容 Windows PowerShell 5.1。启动器不会用 SHA-256 摘要冒充 Return Manifest 签名；必须保留并验证 Worker export 产生的真实签名。
+
+终端 Worker 最高状态为 READY_FOR_RETURN，不能生成 ACCEPTED。
