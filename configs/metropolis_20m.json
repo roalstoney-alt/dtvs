@@ -20,6 +20,7 @@
   "realesrgan_tile": 256,
   "preprocess_filter": "hqdn3d=1.2:1.2:4.5:4.5",
   "subtitle_language": "zho",
+  "subtitle_timeline": "full_source",
   "subtitle_mode": "both",
   "energy_sample_seconds": 2,
   "sample_interval_seconds": 60,
@@ -35,4 +36,3 @@
     "manual_sample_count": 20
   }
 }
-
