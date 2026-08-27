@@ -30,3 +30,4 @@ secrets/
 keys/
 *.pem
 *.key
+.DS_Store

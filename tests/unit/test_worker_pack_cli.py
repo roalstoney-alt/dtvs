@@ -56,6 +56,76 @@ def make_task_package(base: Path, *, tamper_signature: bool = False, low_score: 
     return package
 
 
+def make_handoff_directory(base: Path) -> Path:
+    if base.exists():
+        shutil.rmtree(base)
+    key = generate_private_key()
+    tasks = []
+    handoff = base / "DTVS-P001-OFFLINE-HANDOFF"
+    (handoff / "assignment").mkdir(parents=True)
+    (handoff / "control").mkdir()
+    for idx in range(1, 21):
+        task_id = f"DTVS-P001-T{idx:04d}"
+        short = f"T{idx:04d}"
+        task_dir = handoff / "task-inputs" / short
+        task_dir.mkdir(parents=True)
+        input_file = task_dir / "input_with_context.mkv"
+        input_file.write_text(f"fixture input {idx}", encoding="utf-8")
+        bundle = TaskBundle(
+            task_id=task_id,
+            bundle_version=1,
+            asset_id="sha256:" + "a" * 64,
+            core=FrameRange((idx - 1) * 10, idx * 10),
+            context=FrameRange(max(0, (idx - 1) * 10 - 1), idx * 10 + 1),
+            input={"path_or_object_key": f"task-inputs/{short}/input_with_context.mkv", "sha256": sha256_file(input_file)},
+            execution={
+                "worker_pack_version": "0.1.0",
+                "pipeline_id": "restoration_realesrgan_v1",
+                "model_sha256": "c" * 64,
+                "parameters_sha256": "d" * 64,
+                "random_seed": 20260827,
+            },
+            output={"width": 3840, "height": 2160, "fps_num": 24, "fps_den": 1, "expected_core_frames": 10},
+            lease={"expires_at": "2026-08-28T00:00:00+00:00", "checkpoint_frames": 120},
+            verification={"upload_threshold": 90, "minimum_component_score": 70},
+        ).to_dict()
+        signed = sign_document(bundle, key, "pilot-local-001")
+        (task_dir / "task_bundle.json").write_text(json.dumps(signed, ensure_ascii=False), encoding="utf-8")
+        (task_dir / "task_bundle.sig").write_text(signed["signature"]["value"], encoding="ascii")
+        (task_dir / "public_anchors.json").write_text(json.dumps({"task_id": task_id}), encoding="utf-8")
+        tasks.append(
+            {
+                "task_id": task_id,
+                "input_path": f"task-inputs/{short}/input_with_context.mkv",
+                "bundle_path": f"task-inputs/{short}/task_bundle.json",
+                "bundle_signature_path": f"task-inputs/{short}/task_bundle.sig",
+                "anchors_path": f"task-inputs/{short}/public_anchors.json",
+                "input_sha256": sha256_file(input_file),
+                "input_bytes": input_file.stat().st_size,
+            }
+        )
+    (handoff / "control" / "task_index.json").write_text(
+        json.dumps({"schema_version": "0.2.2", "run_id": "DTVS-P001-TEST", "public_key": base64.b64encode(public_key_bytes(key)).decode("ascii"), "tasks": tasks}),
+        encoding="utf-8",
+    )
+    assignment = {
+        "schema_version": "0.2.2",
+        "assignment_version": 1,
+        "transport_mode": "OFFLINE_MANUAL",
+        "run_id": "DTVS-P001-TEST",
+        "worker_pack_version": "0.1.0",
+        "expected_tasks": 20,
+        "network_required": False,
+        "result_state_limit": "READY_FOR_RETURN",
+        "task_index_path": "control/task_index.json",
+        "created_at": "2026-08-27T00:00:00+00:00",
+        "tasks": tasks,
+    }
+    signed_assignment = sign_document(assignment, key, "pilot-local-001")
+    (handoff / "assignment" / "offline_assignment.json").write_text(json.dumps(signed_assignment, ensure_ascii=False), encoding="utf-8")
+    return handoff
+
+
 class WorkerPackCliTests(unittest.TestCase):
     def test_doctor_success_and_failure(self):
         ok = doctor(ROOT / "runs" / "worker-pack doctor ok")
@@ -131,6 +201,20 @@ class WorkerPackCliTests(unittest.TestCase):
         cmd = (ROOT / "START_DTVS_WORKER.cmd").read_text(encoding="utf-8")
         self.assertIn("Task package path", cmd)
         self.assertIn("dtvs-worker.ps1", cmd)
+
+    def test_handoff_directory_run_processes_20_tasks_and_skips_on_second_run(self):
+        handoff = make_handoff_directory(ROOT / "runs" / "worker-pack handoff")
+        workspace = ROOT / "runs" / "worker-pack handoff workspace"
+        if workspace.exists():
+            shutil.rmtree(workspace)
+        result = run_task(handoff, workspace)
+        self.assertEqual(result["task_count"], 20)
+        self.assertEqual(result["ready_for_return"], 20)
+        self.assertEqual(result["worker_state"], "READY_FOR_RETURN")
+        self.assertNotIn("ACCEPTED", json.dumps(result))
+        skipped = run_task(handoff, workspace)
+        self.assertEqual(skipped["ready_for_return"], 20)
+        self.assertTrue(all(item.get("action") == "SKIPPED_COMPLETED" for item in skipped["results"]))
 
 
 if __name__ == "__main__":

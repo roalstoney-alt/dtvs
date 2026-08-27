@@ -14,7 +14,7 @@ from dtvs.common.hashing import sha256_file
 from dtvs.worker.executor import execute_fixture
 from dtvs.worker.local_qc import local_qc
 from dtvs.worker_pack import WORKER_PACK_VERSION
-from dtvs.worker_pack.package import import_task_package
+from dtvs.worker_pack.package import ImportedTask, import_handoff_tasks, import_task_package
 
 
 def utc() -> str:
@@ -64,11 +64,9 @@ def _attempt_dir(workspace: Path, run_id: str, task_id: str) -> Path:
     return workspace / "runs" / run_id / "tasks" / task_id
 
 
-def run_task(package_path: Path, workspace: Path, *, force_low_score: bool = False, simulate_interrupt: bool = False) -> dict[str, Any]:
-    workspace.mkdir(parents=True, exist_ok=True)
-    imported = import_task_package(package_path, workspace)
+def _run_imported_task(imported: ImportedTask, workspace: Path, *, force_low_score: bool = False, simulate_interrupt: bool = False) -> dict[str, Any]:
     bundle = imported.bundle
-    run_id = bundle.get("run_id") or bundle["task_id"].rsplit("-", 1)[0]
+    run_id = imported.run_id or bundle.get("run_id") or bundle["task_id"].rsplit("-", 1)[0]
     task_dir = _attempt_dir(workspace, run_id, bundle["task_id"])
     attempt_dir = task_dir / "attempt-A001"
     manifest_path = attempt_dir / "attempt_manifest.json"
@@ -108,6 +106,35 @@ def run_task(package_path: Path, workspace: Path, *, force_low_score: bool = Fal
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     write_event(workspace, "TASK_READY_FOR_RETURN", task_id=bundle["task_id"], run_id=run_id, upload_allowed=return_qc["upload_allowed"])
     return manifest
+
+
+def run_task(package_path: Path, workspace: Path, *, force_low_score: bool = False, simulate_interrupt: bool = False) -> dict[str, Any]:
+    workspace.mkdir(parents=True, exist_ok=True)
+    if package_path.is_dir():
+        assignment, tasks = import_handoff_tasks(package_path)
+        results = []
+        for imported in tasks:
+            results.append(_run_imported_task(imported, workspace, force_low_score=force_low_score, simulate_interrupt=False))
+        ready = sum(1 for item in results if item.get("ready_for_return"))
+        local_rejected = sum(1 for item in results if not item.get("local_qc", {}).get("upload_allowed", False))
+        summary = {
+            "schema_version": "0.2.2",
+            "run_id": assignment["run_id"],
+            "worker_pack_version": WORKER_PACK_VERSION,
+            "worker_state": "READY_FOR_RETURN",
+            "ready_for_return": ready,
+            "local_rejected": local_rejected,
+            "task_count": len(results),
+            "results": results,
+            "highest_worker_state": "READY_FOR_RETURN",
+        }
+        if "ACCEPTED" in json.dumps(summary, ensure_ascii=False):
+            raise RuntimeError("WORKER_STATE_FORBIDDEN")
+        (workspace / "runs" / assignment["run_id"] / "worker_run_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+        write_event(workspace, "HANDOFF_READY_FOR_RETURN", run_id=assignment["run_id"], ready_for_return=ready, local_rejected=local_rejected)
+        return summary
+    imported = import_task_package(package_path, workspace)
+    return _run_imported_task(imported, workspace, force_low_score=force_low_score, simulate_interrupt=simulate_interrupt)
 
 
 def export_run(workspace: Path, run_id: str, destination: Path) -> dict[str, Any]:
