@@ -227,20 +227,27 @@ def run_pilot(config_path: Path, run_id: str | None):
                  "-i", str(source), "-vn", "-c:a", "flac", str(audio)])
         except subprocess.CalledProcessError:
             audio = None; event(events, "AUDIO_ABSENT")
+        segment_subtitle = out / "segment_zh.srt"
+        if cfg.get("subtitle_timeline", "full_source") == "full_source":
+            run(["ffmpeg", "-hide_banner", "-y", "-ss", cfg["segment_start"],
+                 "-t", str(cfg["segment_duration_seconds"]), "-i", str(subtitle),
+                 "-c:s", "srt", str(segment_subtitle)])
+        else:
+            shutil.copy2(subtitle, segment_subtitle)
         master = out / "master_4k_zh.mkv"
         cmd = ["ffmpeg", "-hide_banner", "-y", "-i", str(video_only)]
         if audio: cmd += ["-i", str(audio)]
-        cmd += ["-i", str(subtitle), "-map", "0:v:0"]
+        cmd += ["-i", str(segment_subtitle), "-map", "0:v:0"]
         if audio: cmd += ["-map", "1:a:0", "-map", "2:0"]
         else: cmd += ["-map", "1:0"]
         cmd += ["-c:v", "copy", "-c:a", "copy", "-c:s", "srt", "-metadata:s:s:0", "language=zho", str(master)]
         run(cmd)
         review = out / "review_4k_zh_burned.mp4"
-        escaped = str(subtitle.resolve()).replace("\\", "/").replace(":", "\\:").replace("'", "\\'")
+        escaped = str(segment_subtitle.resolve()).replace("\\", "/").replace(":", "\\:").replace("'", "\\'")
         run(["ffmpeg", "-hide_banner", "-y", "-i", str(master), "-vf",
              f"subtitles='{escaped}':charenc=UTF-8:force_style='FontName=Microsoft YaHei,FontSize=22,Outline=2,Shadow=0,MarginV=42'",
              "-c:v", "libx265", "-crf", "18", "-preset", "medium", "-c:a", "aac", "-b:a", "192k", str(review)])
-        hashes = {p.name: sha256(p) for p in (master, review, video_only) if p.exists()}
+        hashes = {p.name: sha256(p) for p in (master, review, video_only, segment_subtitle) if p.exists()}
         (out / "artifact_hashes.json").write_text(json.dumps(hashes, indent=2), encoding="utf-8")
         qc = {"state": "MANUAL_REVIEW_REQUIRED", "master_probe": probe(master), "hashes": hashes,
               "required_manual_samples": cfg["gates"]["manual_sample_count"]}
@@ -274,4 +281,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
