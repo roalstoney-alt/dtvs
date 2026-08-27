@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use DTVS or its Pilot protocol, cite this repository and the exact release tag."
+title: "DTVS: Distributed Task Fulfilment Standard"
+type: software
+version: 0.2.1
+date-released: 2026-08-27
+authors:
+  - family-names: "Roal"
+license: Apache-2.0
+repository-code: "https://github.com/roalstoney-alt/dtvs"
+keywords:
+  - distributed computing
+  - idle compute
+  - verifiable computation
+  - task fulfilment
+  - asymmetric computation
+
