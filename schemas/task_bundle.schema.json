@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dtvs.dev/schema/task-bundle-0.2.1.json",
+  "title": "DTVS Task Bundle v0.2.1",
+  "type": "object",
+  "required": ["spec_version", "pilot_id", "source", "segment", "execution", "quality", "evidence"],
+  "properties": {
+    "spec_version": {"const": "0.2.1"},
+    "pilot_id": {"type": "string"},
+    "source": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+    },
+    "segment": {
+      "type": "object",
+      "required": ["start", "duration_seconds", "chunk_seconds"],
+      "properties": {
+        "start": {"type": "string"},
+        "duration_seconds": {"type": "integer", "minimum": 1},
+        "chunk_seconds": {"type": "integer", "minimum": 10}
+      }
+    },
+    "execution": {"type": "object"},
+    "quality": {"type": "object"},
+    "evidence": {"type": "object"}
+  }
+}
+
