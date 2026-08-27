@@ -1,0 +1,28 @@
+{
+  "spec_version": "0.2.1",
+  "pilot_id": "DTVS-P001",
+  "source_path": "inputs/source_master.mkv",
+  "subtitle_path": "inputs/subtitles_zh.srt",
+  "segment_start": "00:10:00.000",
+  "segment_duration_seconds": 1200,
+  "chunk_seconds": 60,
+  "target_width": 3840,
+  "target_height": 2160,
+  "subtitle_timeline": "full_source",
+  "minimum_free_disk_gb": 80,
+  "realesrgan_executable": "tools/realesrgan-ncnn-vulkan/realesrgan-ncnn-vulkan.exe",
+  "realesrgan_model": "realesrgan-x4plus",
+  "realesrgan_scale": 4,
+  "realesrgan_tile": 256,
+  "preprocess_filter": "hqdn3d=1.2:1.2:4.5:4.5",
+  "video_codec": "libx265",
+  "video_crf": 14,
+  "video_preset": "slow",
+  "pixel_format": "yuv420p10le",
+  "energy_sample_seconds": 2,
+  "sample_interval_seconds": 60,
+  "gates": {
+    "manual_sample_count": 20
+  }
+}
+
