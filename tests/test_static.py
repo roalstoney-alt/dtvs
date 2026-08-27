@@ -1,0 +1,33 @@
+import json
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class StaticContractTests(unittest.TestCase):
+    def test_config_is_frozen_to_20_minutes(self):
+        cfg = json.loads((ROOT / "configs/metropolis_20m.json").read_text(encoding="utf-8"))
+        self.assertEqual(cfg["spec_version"], "0.2.1")
+        self.assertEqual(cfg["segment_duration_seconds"], 1200)
+        self.assertEqual(cfg["chunk_seconds"], 60)
+        self.assertEqual(cfg["segment_duration_seconds"] % cfg["chunk_seconds"], 0)
+        self.assertEqual((cfg["target_width"], cfg["target_height"]), (3840, 2160))
+
+    def test_required_public_files_exist(self):
+        for rel in ["README.md", "ORIGIN.md", "LICENSE", "CHANGELOG.md", "CITATION.cff",
+                    "spec/DTVS_SPEC_v0.2.1_SINGLE_NODE_PILOT.md",
+                    "pilot/METROPOLIS_20M_SINGLE_NODE.md",
+                    "scripts/dtvs_pilot.py"]:
+            self.assertTrue((ROOT / rel).exists(), rel)
+
+    def test_media_is_gitignored(self):
+        text = (ROOT / ".gitignore").read_text(encoding="utf-8")
+        self.assertIn("inputs/**", text)
+        self.assertIn("*.mkv", text)
+        self.assertIn("*.srt", text)
+
+
+if __name__ == "__main__":
+    unittest.main()
+
