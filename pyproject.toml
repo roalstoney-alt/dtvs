@@ -7,6 +7,7 @@ name = "dtvs"
 version = "0.2.2"
 requires-python = ">=3.11"
 dependencies = [
+  "cryptography>=42",
   "jsonschema>=4.22",
 ]
 
@@ -19,4 +20,3 @@ dtvs = "dtvs.cli:main"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-

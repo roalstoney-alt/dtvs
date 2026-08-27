@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "task_id", "bundle_version", "asset_id", "core", "context", "input", "execution", "output", "lease", "verification", "signature"],
+  "properties": {
+    "schema_version": {"const": "0.2.2"},
+    "task_id": {"type": "string", "pattern": "^DTVS-P001-T[0-9]{4}$"},
+    "bundle_version": {"type": "integer", "minimum": 1},
+    "asset_id": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "core": {"$ref": "#/$defs/frame_range"},
+    "context": {"$ref": "#/$defs/frame_range"},
+    "input": {"type": "object", "required": ["path_or_object_key", "sha256"], "additionalProperties": true},
+    "execution": {"type": "object", "required": ["worker_pack_version", "pipeline_id", "model_sha256", "parameters_sha256", "random_seed"], "additionalProperties": true},
+    "output": {"type": "object", "required": ["width", "height", "fps_num", "fps_den", "expected_core_frames"], "additionalProperties": true},
+    "lease": {"type": "object", "required": ["expires_at", "checkpoint_frames"], "additionalProperties": true},
+    "verification": {"type": "object", "required": ["upload_threshold", "minimum_component_score"], "additionalProperties": true},
+    "signature": {
+      "type": "object",
+      "required": ["key_id", "algorithm", "value"],
+      "additionalProperties": false,
+      "properties": {
+        "key_id": {"type": "string"},
+        "algorithm": {"const": "Ed25519"},
+        "value": {"type": "string"}
+      }
+    }
+  },
+  "$defs": {
+    "frame_range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start_frame", "end_frame_exclusive"],
+      "properties": {
+        "start_frame": {"type": "integer", "minimum": 0},
+        "end_frame_exclusive": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}
+

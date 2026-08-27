@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["schema_version","asset_id","source_sha256","source_bytes","fps_num","fps_den","width","height","total_frames","segment_start_frame","segment_end_frame_exclusive","rights_record"],"properties":{"schema_version":{"const":"0.2.2"}},"additionalProperties":true}

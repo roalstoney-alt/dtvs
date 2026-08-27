@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "description": "Legacy v0.2.1 placeholder retained so v0.2.1 configs are not accepted as v0.2.2 bundles."
+}
+
