@@ -52,7 +52,7 @@ For each test record interruption time, last durable state, lost compute time, r
 
 ## 6. Subtitle contract
 
-The Chinese SRT is a controlled human-reviewed input. It must use UTF-8, monotonically increasing cue times, no overlapping cues unless documented, and timestamps inside the frozen segment. The evidence bundle records its origin and SHA-256.
+The Chinese SRT is a controlled human-reviewed input aligned to the full source-master timeline. It must use UTF-8, monotonically increasing cue times, and no overlapping cues unless documented. The runner extracts the frozen 20-minute window, shifts its first timestamp to the segment timeline, and hashes the derived `segment_zh.srt`. The evidence bundle records both input and derived hashes.
 
 The Pilot produces:
 
@@ -98,4 +98,3 @@ Passing these gates changes the run to `VERIFIED`. Any failed hard gate changes 
 ## 11. Transition to Spec v0.3
 
 Spec v0.3 may begin only after the single-node workflow is reproducible. The next profile adds the second RTX 4060, leases, heartbeats, remote artifact transfer, automatic reassignment, duplicate-settlement protection, and cross-node evidence comparison.
-
