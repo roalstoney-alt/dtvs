@@ -25,6 +25,8 @@ Implementation work for Worker Pack v0.1 and the 20-minute v0.2.2 Pilot is defin
 
 The isolated Cloudflare R2 bucket provisioning and task-upload stage is defined in the [R2 Codex workflow](docs/CODEX_R2_TASK_UPLOAD_WORKFLOW_CN.md).
 
+For a local WebM source in Downloads, use the complete [Phase 6A WebM-to-R2 workflow](docs/CODEX_PHASE6A_WEBM_TO_R2_EXECUTION_CN.md).
+
 ## Frozen v0.2.2 pipeline
 
 The coordinator freezes the source, compiles scene-aware Task Bundles, creates public and hidden verification points, and signs every assignment. A Worker Pack verifies the bundle, performs deterministic restoration, checkpoints progress, and applies local upload gates. `LAS >= 90` permits upload but **does not mean final acceptance**. The cloud verifies every submission, samples hidden checks, and only `ACCEPTED` core-frame results may be merged. Audio and Chinese subtitles are applied centrally after video merge.
