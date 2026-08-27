@@ -19,11 +19,17 @@ The first evidence unit is a 20-minute classic-film restoration on one RTX 4060 
 - GPU power sampling, runtime, hashes, checkpoint ledger, and QC report;
 - no claim of cost, quality, or energy advantage until the evidence bundle is complete.
 
-Read [the Pilot runbook](pilot/METROPOLIS_20M_SINGLE_NODE.md) and [Spec v0.2.1](spec/DTVS_SPEC_v0.2.1_SINGLE_NODE_PILOT.md).
+Read [the Pilot runbook](pilot/METROPOLIS_20M_SINGLE_NODE.md), the original [single-node baseline](spec/DTVS_SPEC_v0.2.1_SINGLE_NODE_PILOT.md), and the current frozen [Spec v0.2.2](spec/DTVS_SPEC_v0.2.2_ASYMMETRIC_VERIFIED_PIPELINE.md).
+
+## Frozen v0.2.2 pipeline
+
+The coordinator freezes the source, compiles scene-aware Task Bundles, creates public and hidden verification points, and signs every assignment. A Worker Pack verifies the bundle, performs deterministic restoration, checkpoints progress, and applies local upload gates. `LAS >= 90` permits upload but **does not mean final acceptance**. The cloud verifies every submission, samples hidden checks, and only `ACCEPTED` core-frame results may be merged. Audio and Chinese subtitles are applied centrally after video merge.
+
+LAS measures one output; NRS measures a node's verified history. They are deliberately independent.
 
 ## Repository status
 
-`v0.2.1-pilot-start` — single-node evidence unit. This is not yet a distributed-network validation.
+`v0.2.2-spec-freeze` — the asymmetric coordinator/worker/cloud contract is frozen for implementation. The existing runner remains a v0.2.1 single-node evidence unit until it implements and passes the new contract.
 
 ## Quick start on Windows + RTX 4060
 
@@ -52,4 +58,3 @@ Results are written under `runs/<run_id>/`. A failed chunk can be resumed by run
 ## License
 
 Code and specification text are released under Apache-2.0. Film masters, restoration masters, music, and subtitle translations are not covered by this repository license.
-
