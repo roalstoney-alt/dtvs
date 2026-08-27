@@ -1,5 +1,12 @@
 # Changelog
 
+## Local WebM Phase 6A→6B workflow — 2026-08-27
+
+- added a local-Codex source discovery and immutable-copy gate for WebM files in Downloads;
+- defined full decode, CFR/timebase, 20-minute master, audio/subtitle, task compilation, and signing gates;
+- connected verified task generation to the private R2 upload workflow;
+- blocked cloud-only execution, ambiguous source selection, invented subtitles, and publication of source media.
+
 ## Phase 6A-R2 upload workflow — 2026-08-27
 
 - defined safe create-or-reuse provisioning for the private `dtvs-pilot-assets` bucket;
