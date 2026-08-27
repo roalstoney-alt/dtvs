@@ -8,6 +8,7 @@ media/**
 outputs/**
 evidence/**
 simulated_cloud/**
+reports/**
 .dtvs_keys/**
 *.mp4
 *.mkv
@@ -22,4 +23,10 @@ __pycache__/
 .ruff_cache/
 .venv/
 *.egg-info/
-
+.dev.vars
+.env
+.env.*
+secrets/
+keys/
+*.pem
+*.key

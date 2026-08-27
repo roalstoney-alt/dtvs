@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.2.2",
+  "bucket": "dtvs-pilot-assets",
+  "run_id": "DTVS-P001-YYYYMMDDTHHMMSSZ",
+  "local_run_root": "runs/<run_id>",
+  "remote_prefix": "runs/<run_id>",
+  "wrangler_single_object_limit_bytes": 330301440,
+  "overwrite_existing": false,
+  "allowed_suffixes": [".mkv", ".json", ".sig"],
+  "forbidden_name_patterns": [
+    "source_master",
+    "source_20m_video",
+    "source_20m_audio",
+    "subtitles_20m",
+    "hidden_check",
+    "private_key",
+    ".pem",
+    ".key"
+  ]
+}
+
