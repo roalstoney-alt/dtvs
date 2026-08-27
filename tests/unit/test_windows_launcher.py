@@ -103,6 +103,21 @@ class WindowsLauncherTests(unittest.TestCase):
         self.assertIn("if ($VerifyOnly)", self.ps1)
         self.assertNotIn(" run --package ", self.ps1.split("function Invoke-SelfTest", 1)[1].split("function Invoke-VerifyOnly", 1)[0])
 
+    def test_self_test_uses_frozen_script_path_and_classifies_path_errors(self):
+        self.assertIn("$PSCommandPath", self.ps1)
+        self.assertIn("$script:LauncherScriptPath", self.ps1)
+        self.assertNotIn("$MyInvocation.MyCommand.Path", self.ps1)
+        self.assertNotIn("$MyInvocation.MyCommand.Definition", self.ps1)
+        for marker in [
+            "LAUNCHER_SCRIPT_PATH_EMPTY", "LAUNCHER_SCRIPT_PATH_NOT_FOUND",
+            "LAUNCHER_SCRIPT_READ_FAILED", "POWERSHELL_PARSE_FAILED",
+            "launcher_script_path", "launcher_script_exists", "launcher_script_bytes",
+            "launcher_script_encoding", "powershell_version", "parse_error_count",
+        ]:
+            self.assertIn(marker, self.ps1)
+        self.assertIn("$parseError.Extent.StartLineNumber", self.ps1)
+        self.assertIn("$parseError.Message", self.ps1)
+
     def test_markdown_here_string_and_ps51_static_compatibility(self):
         self.assertIn('$markdown = @"', self.ps1)
         self.assertIn('"@\n  Write-Utf8Text', self.ps1)

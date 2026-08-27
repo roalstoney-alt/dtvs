@@ -5,7 +5,15 @@
 
 $ErrorActionPreference = "Stop"
 
-$Root = Split-Path -Parent $MyInvocation.MyCommand.Path
+if ([string]::IsNullOrWhiteSpace($PSCommandPath)) {
+  throw "LAUNCHER_SCRIPT_PATH_UNAVAILABLE"
+}
+$script:LauncherScriptPath = [System.IO.Path]::GetFullPath([string]$PSCommandPath)
+if ([string]::IsNullOrWhiteSpace($script:LauncherScriptPath)) {
+  throw "LAUNCHER_SCRIPT_PATH_UNAVAILABLE"
+}
+
+$Root = Split-Path -Parent $script:LauncherScriptPath
 $RuntimeRoot = Join-Path $Root "runtime"
 $WorkerRoot = Join-Path $RuntimeRoot "worker"
 $HandoffRoot = Join-Path $RuntimeRoot "handoff"
@@ -352,12 +360,45 @@ function Invoke-WorkerDoctor {
 }
 
 function Assert-ScriptParsePass {
-  $scriptPath = $MyInvocation.MyCommand.Path
+  $parseTarget = [string]$script:LauncherScriptPath
+  if ([string]::IsNullOrWhiteSpace($parseTarget)) {
+    Stop-DTVS 60 "self_test" "LAUNCHER_SCRIPT_PATH_EMPTY"
+  }
+  if (-not (Test-Path -LiteralPath $parseTarget -PathType Leaf)) {
+    Stop-DTVS 60 "self_test" "LAUNCHER_SCRIPT_PATH_NOT_FOUND"
+  }
+  try {
+    $parseTarget = (Get-Item -LiteralPath $parseTarget).FullName
+    $scriptBytes = [System.IO.File]::ReadAllBytes($parseTarget).Length
+    $scriptEncoding = "UTF-8-BOM"
+  } catch {
+    Stop-DTVS 60 "self_test" "LAUNCHER_SCRIPT_READ_FAILED"
+  }
   $tokens = $null
-  $errors = $null
-  [System.Management.Automation.Language.Parser]::ParseFile($scriptPath, [ref]$tokens, [ref]$errors) | Out-Null
-  if ($errors.Count -ne 0) {
-    $errors | Format-List *
+  $parseErrors = $null
+  try {
+    [System.Management.Automation.Language.Parser]::ParseFile(
+      [string]$parseTarget,
+      [ref]$tokens,
+      [ref]$parseErrors
+    ) | Out-Null
+  } catch {
+    Stop-DTVS 60 "self_test" "LAUNCHER_SCRIPT_READ_FAILED"
+  }
+  $parseErrorCount = 0
+  if ($null -ne $parseErrors) { $parseErrorCount = $parseErrors.Count }
+  Write-LauncherEvent "SELF_TEST_SCRIPT_DIAGNOSTICS" @{
+    launcher_script_path = $parseTarget
+    launcher_script_exists = $true
+    launcher_script_bytes = $scriptBytes
+    launcher_script_encoding = $scriptEncoding
+    powershell_version = $PSVersionTable.PSVersion.ToString()
+    parse_error_count = $parseErrorCount
+  }
+  if ($parseErrorCount -gt 0) {
+    foreach ($parseError in $parseErrors) {
+      Write-Host ("Parser error at line {0}: {1}" -f $parseError.Extent.StartLineNumber, $parseError.Message)
+    }
     Stop-DTVS 60 "self_test" "POWERSHELL_PARSE_FAILED"
   }
   Write-Host "POWERSHELL_51_PARSE_PASS"
