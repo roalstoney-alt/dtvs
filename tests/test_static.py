@@ -13,6 +13,7 @@ class StaticContractTests(unittest.TestCase):
         self.assertEqual(cfg["chunk_seconds"], 60)
         self.assertEqual(cfg["segment_duration_seconds"] % cfg["chunk_seconds"], 0)
         self.assertEqual((cfg["target_width"], cfg["target_height"]), (3840, 2160))
+        self.assertEqual(cfg["subtitle_timeline"], "full_source")
 
     def test_required_public_files_exist(self):
         for rel in ["README.md", "ORIGIN.md", "LICENSE", "CHANGELOG.md", "CITATION.cff",
@@ -30,4 +31,3 @@ class StaticContractTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
