@@ -37,7 +37,7 @@ If any element is unclear, keep film files and visual samples out of GitHub. Pub
 Place:
 
 - `inputs/source_master.mkv` — highest legally usable source;
-- `inputs/subtitles_zh.srt` — UTF-8, manually reviewed, aligned to the full source timeline;
+- `inputs/subtitles_zh.srt` — UTF-8, manually reviewed, aligned to the full source timeline; the runner automatically extracts and shifts the frozen segment;
 - an optional `inputs/RIGHTS_NOTE.md` — source URL, license evidence, retrieval date, restrictions.
 
 Do not commit inputs.
@@ -71,4 +71,3 @@ Publish:
 - limits of the single-node result.
 
 Do not publish the source/master or subtitle text unless rights permit it.
-
