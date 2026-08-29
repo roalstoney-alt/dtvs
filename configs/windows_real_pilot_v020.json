@@ -1,0 +1,17 @@
+{
+  "schema_version": "0.2.2",
+  "worker_pack_version": "0.2.0-pilot",
+  "backend": "ncnn_vulkan",
+  "execution_mode": "real_render",
+  "scale": 4,
+  "tile": 64,
+  "concurrency": 1,
+  "cleanup_verified_temp_frames": false,
+  "segment_seconds": 5,
+  "pilot_seconds": 60,
+  "preflight_seconds": 10,
+  "output_codec": "ffv1",
+  "output_container": "matroska",
+  "fixture_fallback": false,
+  "worker_state_limit": "READY_FOR_RETURN"
+}

@@ -1,0 +1,18 @@
+DTVS Windows Real Video Pilot Handoff v0.2.0-pilot
+
+This package contains code and Windows command entrypoints only. It is not a
+formal Worker release, installer, model distribution, or Windows result.
+
+Required operator inputs under K:\dtvs\input:
+  pilot-source.mp4             legal pilot source; never a fixture
+  mac-smoke-input.png          720x480 reference input, SHA-256 is recorded
+  real-pilot-task-plan.json    center-signed real-render task plan
+
+The executable and NCNN model files must remain in the post-install known-good
+stage or a canonical tools directory. The package never bundles them.
+Run VERIFY_INPUTS.cmd, then RUN_POSTINSTALL_FREEZE.cmd, then RUN_10_SECOND_PILOT.cmd.
+Only a real 10-second PASS permits RUN_1_MINUTE_PILOT.cmd.
+
+Missing or unsigned real task plans stop with a stable error. Fixture execution
+is never an automatic fallback. No command in this package runs the 20-minute
+pilot or creates ACCEPTED.

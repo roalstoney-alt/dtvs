@@ -10,6 +10,19 @@ from dtvs.worker.checkpoint import write_checkpoint
 from dtvs.worker.energy import write_fixture_energy_sample
 
 
+def execute_task(bundle: dict[str, Any], attempt_dir: Path, **kwargs: Any) -> dict[str, Any]:
+    """Route fixture tests and real backends without implicit fallback."""
+    mode = bundle.get("execution", {}).get("execution_mode")
+    if mode == "fixture_test":
+        return execute_fixture(bundle, attempt_dir, attempt_id=attempt_dir.name)
+    if mode == "real_render" and bundle.get("execution", {}).get("backend") == "ncnn_vulkan":
+        from dtvs.worker.real_ncnn_executor import execute_realesrgan_ncnn
+        return execute_realesrgan_ncnn(bundle, attempt_dir, **kwargs)
+    if mode == "real_render":
+        raise ValueError("UNSUPPORTED_PIPELINE")
+    raise ValueError("EXECUTION_MODE_REQUIRED")
+
+
 def execute_fixture(bundle: dict[str, Any], attempt_dir: Path, *, attempt_id: str, frame_count_delta: int = 0) -> dict[str, Any]:
     attempt_dir.mkdir(parents=True, exist_ok=True)
     expected = bundle["output"]["expected_core_frames"]
@@ -46,4 +59,3 @@ def execute_fixture(bundle: dict[str, Any], attempt_dir: Path, *, attempt_id: st
         "status_transitions": [],
         "mock_restoration": True,
     }
-

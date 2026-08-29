@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schema_version", "run_id", "backend", "execution_mode", "segments"],
+  "properties": {
+    "schema_version": {"const": "0.2.2"},
+    "run_id": {"type": "string", "pattern": "^DTVS-P001-WIN-1MIN-[0-9TZ-]+$"},
+    "backend": {"const": "ncnn_vulkan"},
+    "execution_mode": {"const": "real_render"},
+    "segments": {"type": "array", "minItems": 2}
+  },
+  "additionalProperties": true
+}

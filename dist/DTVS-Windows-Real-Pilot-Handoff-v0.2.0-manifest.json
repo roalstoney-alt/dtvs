@@ -1,0 +1,368 @@
+{
+  "built_at": "2026-08-29T03:46:29.579906+00:00",
+  "excluded": [
+    "secrets",
+    "private_keys",
+    "Real-ESRGAN EXE",
+    "model files",
+    "source media",
+    "Windows evidence",
+    "fixture results"
+  ],
+  "files": [
+    {
+      "bytes": 141,
+      "relative_path": "COLLECT_EVIDENCE.cmd",
+      "sha256": "d5c109cc92bb786b91a9e07e65a5cac28a367f11bf3c906db560bad62a50e26a"
+    },
+    {
+      "bytes": 181,
+      "relative_path": "COLLECT_EVIDENCE.ps1",
+      "sha256": "7d8296e141d5608d5bfb29dc8a442936534edd761992728435439649777b5c1d"
+    },
+    {
+      "bytes": 418,
+      "relative_path": "PILOT_HANDOFF_README_CN.txt",
+      "sha256": "15972a4b7fae3ce6242ec263e0c062da8158de079b7fee1af6c4732f3325f248"
+    },
+    {
+      "bytes": 1691,
+      "relative_path": "README.md",
+      "sha256": "ab8bd5f8913e17fea319f01a8d20232591f83636e707ace3cafe748f00da441b"
+    },
+    {
+      "bytes": 146,
+      "relative_path": "RESUME_1_MINUTE_PILOT.cmd",
+      "sha256": "150e2a25e31717a722c76c00e15def5095226d373a5764d8bcb9585945ffbca7"
+    },
+    {
+      "bytes": 176,
+      "relative_path": "RESUME_1_MINUTE_PILOT.ps1",
+      "sha256": "baa9910d9e850ae20d3268c811d46de196ef31ff3622305d310314afd14013c2"
+    },
+    {
+      "bytes": 144,
+      "relative_path": "RUN_10_SECOND_PILOT.cmd",
+      "sha256": "04a66c698178f598f73e6bbf53d1e253e0056b308d8e318d8ad1efdc968feb43"
+    },
+    {
+      "bytes": 172,
+      "relative_path": "RUN_10_SECOND_PILOT.ps1",
+      "sha256": "4a711834d5063e51593a6afbbbf01c6ca33037a4f205eb26418ca77db3ca745e"
+    },
+    {
+      "bytes": 143,
+      "relative_path": "RUN_1_MINUTE_PILOT.cmd",
+      "sha256": "43636feb981468c0330862f67aa9efb9b3b2c7a9c0b24acb239a7b35b3c83306"
+    },
+    {
+      "bytes": 173,
+      "relative_path": "RUN_1_MINUTE_PILOT.ps1",
+      "sha256": "2595dfea2c302318bf93b4cdce63853773220d49bb99459783466c293834a5be"
+    },
+    {
+      "bytes": 147,
+      "relative_path": "RUN_POSTINSTALL_FREEZE.cmd",
+      "sha256": "41c97773235d2c8061773d55c9fe1794e6c417fad4cded0888549f95f5d42d1e"
+    },
+    {
+      "bytes": 183,
+      "relative_path": "RUN_POSTINSTALL_FREEZE.ps1",
+      "sha256": "d41d6640ea7646386214d583f6fa29e8c0d6e649499a2bb72dc50635c97602bb"
+    },
+    {
+      "bytes": 138,
+      "relative_path": "VERIFY_INPUTS.cmd",
+      "sha256": "7d76e123f83860e8cdce7734ea71cc959b8bb1c96a1617dd75ab591006c300ae"
+    },
+    {
+      "bytes": 178,
+      "relative_path": "VERIFY_INPUTS.ps1",
+      "sha256": "c8f40b8b8157994316de83e2b933a44aea7fd821218fd758c218a909881003c5"
+    },
+    {
+      "bytes": 431,
+      "relative_path": "configs/windows_real_pilot_v020.json",
+      "sha256": "38fc5df54e565642098740a4a7179bfd1c466208b155239b5e078491e3f4469d"
+    },
+    {
+      "bytes": 894,
+      "relative_path": "docs/FAILURE_CODES.md",
+      "sha256": "fbdf9340810e7107190529446ff3834fe490307b7e70b80fcc3400941a07c66a"
+    },
+    {
+      "bytes": 940,
+      "relative_path": "docs/WINDOWS_REAL_PILOT_HANDOFF_V0.2.0_CN.txt",
+      "sha256": "7fe5e6e2f0ec064f45f945bfaa5abe2dac7b72957a6fd92438a89765f1f579f2"
+    },
+    {
+      "bytes": 23,
+      "relative_path": "dtvs/__init__.py",
+      "sha256": "050094140db79d7cabc32f62f936858df938eafe7b0830dc87d872b072af50e2"
+    },
+    {
+      "bytes": 861,
+      "relative_path": "dtvs/cli.py",
+      "sha256": "c1ffb678f8a9b581a638e96e22ef70403fbc17bf2510e5cf8bd818b7ed70e64f"
+    },
+    {
+      "bytes": 296,
+      "relative_path": "dtvs/common/canonical_json.py",
+      "sha256": "44f43e0b0e4ee354e6a463f37ab236081032cae6c2446b3a09ce1129eb1ff163"
+    },
+    {
+      "bytes": 651,
+      "relative_path": "dtvs/common/errors.py",
+      "sha256": "7e3d77b079e1f4c1f950ef83db87ef1aadb94bdfe73a0553668bbfa9c4bd2677"
+    },
+    {
+      "bytes": 452,
+      "relative_path": "dtvs/common/hashing.py",
+      "sha256": "57f086d8829bf72d4fbfd0af9692f90067e1c9d4b0e5ef3ca97576c81ca9a8ab"
+    },
+    {
+      "bytes": 1029,
+      "relative_path": "dtvs/common/media_probe.py",
+      "sha256": "800f77885d12b7a6e2b4085b0520a695a3b254dfed0bf4d44a3041e735032fee"
+    },
+    {
+      "bytes": 304,
+      "relative_path": "dtvs/common/paths.py",
+      "sha256": "36d8a2dc0c8dceffe9ab87a1d653161385412f1018350bfeb7662360f96bf29d"
+    },
+    {
+      "bytes": 732,
+      "relative_path": "dtvs/common/timebase.py",
+      "sha256": "61fc831619860b267ad4083659a5fa466d27456351c748cb826517c36dc14fd7"
+    },
+    {
+      "bytes": 1838,
+      "relative_path": "dtvs/contracts/models.py",
+      "sha256": "bd11c4d2d98703abfecc2c554c0b335be7c624d6059ef315a3b79b117c828c04"
+    },
+    {
+      "bytes": 2227,
+      "relative_path": "dtvs/contracts/signing.py",
+      "sha256": "a894cd7ede615ba1b2a3ec094bb19b62162cb358e4b464c6f1541acb4203b564"
+    },
+    {
+      "bytes": 2082,
+      "relative_path": "dtvs/contracts/state_machine.py",
+      "sha256": "4ca6453713f335c96d5c17278317b912740ef80f4ae48589ea2c39721a906cae"
+    },
+    {
+      "bytes": 395,
+      "relative_path": "dtvs/contracts/validation.py",
+      "sha256": "8371f3d7830de7a935801aff7fc86c470e20efa5f3b837d1fd59fd3cafc3025b"
+    },
+    {
+      "bytes": 1361,
+      "relative_path": "dtvs/coordinator/asset_freezer.py",
+      "sha256": "2e1135ce68ac593e9c8def9289adc7a4854e1b1f14cd2aac0b048c0ad5a7f5fe"
+    },
+    {
+      "bytes": 620,
+      "relative_path": "dtvs/coordinator/ledger.py",
+      "sha256": "d0bcf6879f732c4e04e7c4b84a1fc2c3e4a8775fc71e835994fbe61595864036"
+    },
+    {
+      "bytes": 1574,
+      "relative_path": "dtvs/coordinator/scene_splitter.py",
+      "sha256": "dae5a2d54a624dbd6d7edad1f066bbfd225c9b50f34c5b316b64b5c87a8f3d4d"
+    },
+    {
+      "bytes": 3222,
+      "relative_path": "dtvs/coordinator/task_compiler.py",
+      "sha256": "5b1b5d705b5ac926851629d13ae116150ecbab4b40196b74a150e472eb8673a0"
+    },
+    {
+      "bytes": 1046,
+      "relative_path": "dtvs/coordinator/verification_points.py",
+      "sha256": "400324c5101af0dcf2181161e955959a5b62293e24575ed975346fab11882725"
+    },
+    {
+      "bytes": 469,
+      "relative_path": "dtvs/faults.py",
+      "sha256": "2c157ab53a4830074bf3be6a2b1da44f2e95740c6baee49baf8c71f27bd02198"
+    },
+    {
+      "bytes": 1183,
+      "relative_path": "dtvs/merger/accepted_index.py",
+      "sha256": "9f50a4524437389cf37c2d577cc519e23cef4f10c099c703549bf43336133b94"
+    },
+    {
+      "bytes": 828,
+      "relative_path": "dtvs/merger/boundary_qc.py",
+      "sha256": "7ca587816e8c7a61edd04f072a4224383a4140ec13230452fe035c669ddd963a"
+    },
+    {
+      "bytes": 116,
+      "relative_path": "dtvs/merger/delivery.py",
+      "sha256": "131ccbb4b8c38f78bb334ebea58dc4a7e5f463349881fe9d555bcf7dc8f557a6"
+    },
+    {
+      "bytes": 1125,
+      "relative_path": "dtvs/merger/video_merge.py",
+      "sha256": "2afe5de1ef0e865677ead1ef49c215932bad53047644ad9e726881a6a5bcf123"
+    },
+    {
+      "bytes": 6707,
+      "relative_path": "dtvs/pilot.py",
+      "sha256": "646dda9b9aaccf7c1da288a557f8389a65766bf5eca4e7b6019dc06428925e40"
+    },
+    {
+      "bytes": 341,
+      "relative_path": "dtvs/reporting/economics.py",
+      "sha256": "3bbe1cd95f232dcdd5a04cf9f14bc1bddd32b3330c52f6a7b64601127ff79abd"
+    },
+    {
+      "bytes": 306,
+      "relative_path": "dtvs/reporting/evidence_manifest.py",
+      "sha256": "24d449bb5893032abe40d462ab573f3d6bc0d67baa84dd1257f061141bbb9807"
+    },
+    {
+      "bytes": 1009,
+      "relative_path": "dtvs/reporting/pilot_report.py",
+      "sha256": "fed0a9df64ba55907abbd6adc90640da4e41b057c52ef2c436f5ac411d51da79"
+    },
+    {
+      "bytes": 1,
+      "relative_path": "dtvs/storage/__init__.py",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "bytes": 2707,
+      "relative_path": "dtvs/storage/r2_manifest.py",
+      "sha256": "bf63d7f689de51fe696c9709d50dde0ac51f682e3bd1ec2847b1f22b03c3ed82"
+    },
+    {
+      "bytes": 3255,
+      "relative_path": "dtvs/storage/r2_wrangler.py",
+      "sha256": "fe886b6054771a2d9eb16d26fed6b1a5ad4cdf441dbea57021f705d6ea11a49b"
+    },
+    {
+      "bytes": 1136,
+      "relative_path": "dtvs/storage/upload_policy.py",
+      "sha256": "4634f9cce0e2a9ac00c50d93ce5eebac9fbfa876c37019dcf125632615803f0c"
+    },
+    {
+      "bytes": 534,
+      "relative_path": "dtvs/verifier/hidden_checks.py",
+      "sha256": "f2b86487606dcbb9ec35602bfd511412f93d759c955bef2baa771cfe3b7ba3f4"
+    },
+    {
+      "bytes": 287,
+      "relative_path": "dtvs/verifier/intake.py",
+      "sha256": "20adc3f39b5d41ec8ebeeddfff93f5a9e5a8ec9d5fb4c0920168566d244078d2"
+    },
+    {
+      "bytes": 150,
+      "relative_path": "dtvs/verifier/rerender.py",
+      "sha256": "59bf038fd6597a14a28472646634ae471af860b8a6ccafccf4b591c2cb75d979"
+    },
+    {
+      "bytes": 1100,
+      "relative_path": "dtvs/verifier/structural_qc.py",
+      "sha256": "063f9aa0413c389d9c900838888eab4e4f1ceb2e50c4608970ebec902b93922b"
+    },
+    {
+      "bytes": 1621,
+      "relative_path": "dtvs/verifier/verdict.py",
+      "sha256": "a4a4291650582400336bf6ace31530714456ad6512878e31eeb48c27637a8b97"
+    },
+    {
+      "bytes": 584,
+      "relative_path": "dtvs/worker/bundle_loader.py",
+      "sha256": "6e2ab2c6ab806d79e72848666ed2ae0a4c6f1dd93f72b4330f521e4a48a8bbeb"
+    },
+    {
+      "bytes": 622,
+      "relative_path": "dtvs/worker/checkpoint.py",
+      "sha256": "fc7d754946bb90a493f595065440167eda85d580a6a5ef99a4e816c21c0107c6"
+    },
+    {
+      "bytes": 562,
+      "relative_path": "dtvs/worker/energy.py",
+      "sha256": "40b0b0672a415c3a5c95310f070521566cc65fdd94c347df98b2945d0130f751"
+    },
+    {
+      "bytes": 2620,
+      "relative_path": "dtvs/worker/executor.py",
+      "sha256": "1fafb229c6d01b46b12c1113ee1a4d1a93c5ea61e01792adb027a2ab65fee809"
+    },
+    {
+      "bytes": 2865,
+      "relative_path": "dtvs/worker/local_qc.py",
+      "sha256": "a80a10df3be0490dd859de16e1ab420c99584f41b6015a054cb8d3dc3838f02d"
+    },
+    {
+      "bytes": 1184,
+      "relative_path": "dtvs/worker/preflight.py",
+      "sha256": "9ca09d6e15fa011938788245707af76ab99495609c9f22da11d26bba68e9693d"
+    },
+    {
+      "bytes": 6130,
+      "relative_path": "dtvs/worker/real_ncnn_executor.py",
+      "sha256": "1df0afe3b8dc40fadf0c488acdac7b95ec5a41914d2ca9516c2154c130797cc7"
+    },
+    {
+      "bytes": 1383,
+      "relative_path": "dtvs/worker/uploader.py",
+      "sha256": "7f948c9817d1f6ef21c07b988db8db39afde8a10d0803b78ffee55a8dccd1218"
+    },
+    {
+      "bytes": 67,
+      "relative_path": "dtvs/worker_pack/__init__.py",
+      "sha256": "dd55464c5dc09a272c4f436d1df43e175c2697472ece32851df705afa711544a"
+    },
+    {
+      "bytes": 4736,
+      "relative_path": "dtvs/worker_pack/package.py",
+      "sha256": "1babed6a05b81344c37331f2e6ac9fd804a85877020c1ea112d609055556201e"
+    },
+    {
+      "bytes": 8355,
+      "relative_path": "dtvs/worker_pack/runtime.py",
+      "sha256": "4cab7e77445431fcbfe2b489e17378148bab131c142a257bbb203798aa1fc845"
+    },
+    {
+      "bytes": 282,
+      "relative_path": "dtvs-worker.ps1",
+      "sha256": "037bc75f769066228f4e20c6e8e5c9c9986c4f6fe8f0dc8b818268031f632920"
+    },
+    {
+      "bytes": 1687,
+      "relative_path": "dtvs_worker_cli.py",
+      "sha256": "6588b134cad3383c3b8ee819a0852ea01ff76ebd60a47017ba65cb74b6f66fe1"
+    },
+    {
+      "bytes": 1908,
+      "relative_path": "schemas/task_bundle_v022.schema.json",
+      "sha256": "8798eca3a2acfa6da2e64f5ff2affe08f43540723f62d3c7b6d4f99780fda4cc"
+    },
+    {
+      "bytes": 483,
+      "relative_path": "schemas/windows_real_pilot_manifest.schema.json",
+      "sha256": "a1e9fcb72504456dbea93d5b154e8021d1a8a32d0eb1bf1364eaba55702db62f"
+    },
+    {
+      "bytes": 6622,
+      "relative_path": "scripts/windows_real_pilot.py",
+      "sha256": "b84211866d4e0613c8d8d963b0a64b269d1b4e4495567a2c632374bb385e3ed1"
+    }
+  ],
+  "formal_release": false,
+  "handoff_version": "0.2.0-pilot",
+  "installer": false,
+  "mac_baseline_tag": "dtvs-p001-macos-cpu-smoke-v0.1",
+  "real_render_executor": "ncnn_vulkan",
+  "schema_version": "0.2.2",
+  "target": "Windows x64 RTX 4060 optional pilot node",
+  "windows_pass_claimed": false,
+  "worker_pack_version": "0.2.0-pilot",
+  "zip": {
+    "bytes": 49789,
+    "filename": "DTVS-Windows-Real-Pilot-Handoff-v0.2.0.zip",
+    "sha256": "9b47a95b3aefe9c5c49b40c35908e82af5c7adfa1ba771216793147c9713e2a4"
+  }
+}
