@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-08-29T03:46:29.579906+00:00",
+  "built_at": "2026-08-29T04:04:46.474046+00:00",
   "excluded": [
     "secrets",
     "private_keys",
@@ -11,14 +11,14 @@
   ],
   "files": [
     {
-      "bytes": 141,
+      "bytes": 363,
       "relative_path": "COLLECT_EVIDENCE.cmd",
-      "sha256": "d5c109cc92bb786b91a9e07e65a5cac28a367f11bf3c906db560bad62a50e26a"
+      "sha256": "3cd805f33e2faacd6a47e4f7d62df08ba2f5293ef13d0d81ca21cc11c452cd1a"
     },
     {
-      "bytes": 181,
+      "bytes": 296,
       "relative_path": "COLLECT_EVIDENCE.ps1",
-      "sha256": "7d8296e141d5608d5bfb29dc8a442936534edd761992728435439649777b5c1d"
+      "sha256": "9e4cc838f4508034fb8bd9700a727ef50dcedddfb6afbc59d187c2e6d24f1b27"
     },
     {
       "bytes": 418,
@@ -31,54 +31,54 @@
       "sha256": "ab8bd5f8913e17fea319f01a8d20232591f83636e707ace3cafe748f00da441b"
     },
     {
-      "bytes": 146,
+      "bytes": 383,
       "relative_path": "RESUME_1_MINUTE_PILOT.cmd",
-      "sha256": "150e2a25e31717a722c76c00e15def5095226d373a5764d8bcb9585945ffbca7"
+      "sha256": "530efad146476bb8db698082f79a864244d9ab8a2302f18238494076e1dbfb80"
     },
     {
-      "bytes": 176,
+      "bytes": 291,
       "relative_path": "RESUME_1_MINUTE_PILOT.ps1",
-      "sha256": "baa9910d9e850ae20d3268c811d46de196ef31ff3622305d310314afd14013c2"
+      "sha256": "47fcd81c0695617163a030d74701fccd8f23e31c97f239c43cdb4a26954877d7"
     },
     {
-      "bytes": 144,
+      "bytes": 375,
       "relative_path": "RUN_10_SECOND_PILOT.cmd",
-      "sha256": "04a66c698178f598f73e6bbf53d1e253e0056b308d8e318d8ad1efdc968feb43"
+      "sha256": "b9f1727508e020ce27daeaacf5821bf697f5dc05daf581c1ace99fc487d91f28"
     },
     {
-      "bytes": 172,
+      "bytes": 287,
       "relative_path": "RUN_10_SECOND_PILOT.ps1",
-      "sha256": "4a711834d5063e51593a6afbbbf01c6ca33037a4f205eb26418ca77db3ca745e"
+      "sha256": "655f091bbc96be41efc5037690d48af5b06b7ffe013862e2f85b3f8aea554a3e"
     },
     {
-      "bytes": 143,
+      "bytes": 371,
       "relative_path": "RUN_1_MINUTE_PILOT.cmd",
-      "sha256": "43636feb981468c0330862f67aa9efb9b3b2c7a9c0b24acb239a7b35b3c83306"
+      "sha256": "4dc4e94890b03e2ad89a52f2137e088549426223ec52e4031ac4fcfbaf0a61df"
     },
     {
-      "bytes": 173,
+      "bytes": 288,
       "relative_path": "RUN_1_MINUTE_PILOT.ps1",
-      "sha256": "2595dfea2c302318bf93b4cdce63853773220d49bb99459783466c293834a5be"
+      "sha256": "7334c8d35e15fdf4e2293bff649e6ec107e788cc1d409ce0f8450aff8f3308e2"
     },
     {
-      "bytes": 147,
+      "bytes": 387,
       "relative_path": "RUN_POSTINSTALL_FREEZE.cmd",
-      "sha256": "41c97773235d2c8061773d55c9fe1794e6c417fad4cded0888549f95f5d42d1e"
+      "sha256": "1f242806cb7aecef8595035d4a059f1443779ac561b65e730ab61a4657960aad"
     },
     {
-      "bytes": 183,
+      "bytes": 298,
       "relative_path": "RUN_POSTINSTALL_FREEZE.ps1",
-      "sha256": "d41d6640ea7646386214d583f6fa29e8c0d6e649499a2bb72dc50635c97602bb"
+      "sha256": "bf3ef4347ab4c0a63ccdcc142d822f468da9d0fd067285d60716cd5482dffd52"
     },
     {
-      "bytes": 138,
+      "bytes": 351,
       "relative_path": "VERIFY_INPUTS.cmd",
-      "sha256": "7d76e123f83860e8cdce7734ea71cc959b8bb1c96a1617dd75ab591006c300ae"
+      "sha256": "93619304db4506e9ddf7a3605cb19315d923747257e0e43dc726074e898d158d"
     },
     {
-      "bytes": 178,
+      "bytes": 293,
       "relative_path": "VERIFY_INPUTS.ps1",
-      "sha256": "c8f40b8b8157994316de83e2b933a44aea7fd821218fd758c218a909881003c5"
+      "sha256": "d128daa820b3afb3c4653cd429b6812b2644f761365843b5eebfeb9564b7cd27"
     },
     {
       "bytes": 431,
@@ -361,8 +361,8 @@
   "windows_pass_claimed": false,
   "worker_pack_version": "0.2.0-pilot",
   "zip": {
-    "bytes": 49789,
+    "bytes": 50774,
     "filename": "DTVS-Windows-Real-Pilot-Handoff-v0.2.0.zip",
-    "sha256": "9b47a95b3aefe9c5c49b40c35908e82af5c7adfa1ba771216793147c9713e2a4"
+    "sha256": "02e17d07c00104e637415d94f03159b8d01110b52c6fc87931b8e4a7055ea24b"
   }
 }

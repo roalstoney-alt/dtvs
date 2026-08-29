@@ -1,5 +1,11 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0RUN_10_SECOND_PILOT.ps1" %*
-exit /b %ERRORLEVEL%
+if not exist "%~dp0logs" mkdir "%~dp0logs"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0RUN_10_SECOND_PILOT.ps1" %* > "%~dp0logs\RUN_10_SECOND_PILOT.console.log" 2>&1
+set "DTVS_EXIT=%ERRORLEVEL%"
+type "%~dp0logs\RUN_10_SECOND_PILOT.console.log"
+echo.
+echo RUN_10_SECOND_PILOT exit code: %DTVS_EXIT%
+pause
+exit /b %DTVS_EXIT%
