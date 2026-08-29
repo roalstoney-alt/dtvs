@@ -157,17 +157,22 @@ def _run_pilot(root: Path, seconds: int, resume: bool = False) -> int:
             if cp.returncode != 0: raise RuntimeError("FRAME_EXTRACT_FAILED")
             bundle = json.loads((root / ref["bundle"]).read_text(encoding="utf-8"))
             result = execute_realesrgan_ncnn(bundle, segment_dir / "attempt-A001", input_path=source, command_input_path=input_frames, artifacts=artifacts, model_dir=model_dir)
-            encode_list = segment_dir / "frames.ffconcat"
             # The executor owns the attempt output directory. Keep the
             # encoder pointed at that directory instead of a separate,
             # never-populated sibling.
             output_files = sorted((segment_dir / "attempt-A001" / "output").glob("*.png"))
             if not output_files: raise RuntimeError("OUTPUT_NOT_FOUND")
-            encode_list.write_text("ffconcat version 1.0\n" + "\n".join(f"file '{p.as_posix()}'" for p in output_files) + "\n", encoding="utf-8")
             mkv = segment_dir / "segment.ffv1.mkv"
-            enc = run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(encode_list), "-c:v", "ffv1", "-level", "3", "-g", "1", str(mkv)])
+            # Give FFmpeg an explicit image-sequence time base. A concat list
+            # assigns invalid/equal timestamps and drops most frames.
+            enc = run(["ffmpeg", "-y", "-framerate", "30000/1001", "-i", str(output_files[0].parent / "frame_%08d.png"), "-c:v", "ffv1", "-level", "3", "-g", "1", "-fps_mode", "cfr", str(mkv)])
             (segment_dir / "encode_stderr.log").write_text(enc.stderr, encoding="utf-8")
             if enc.returncode != 0: raise RuntimeError("FFV1_ENCODE_FAILED")
+            encoded_probe = run(["ffprobe", "-v", "error", "-count_frames", "-select_streams", "v:0", "-show_entries", "stream=nb_read_frames", "-of", "json", str(mkv)])
+            if encoded_probe.returncode != 0: raise RuntimeError("FFV1_DECODE_FAILED")
+            encoded_streams = json.loads(encoded_probe.stdout or "{}").get("streams", [])
+            encoded_count = int(encoded_streams[0].get("nb_read_frames", 0)) if encoded_streams else 0
+            if encoded_count != len(output_files): raise RuntimeError("FFV1_FRAME_COUNT_MISMATCH")
             segment_manifest.write_text(json.dumps({"task_id": ref["task_id"], "start_frame": start, "end_frame_exclusive": end, "input_frames": len(list(input_frames.glob("*.png"))), "output_frames": len(output_files), "ffv1": str(mkv), "worker_state": "READY_FOR_RETURN", "fixture_call_count": 0, "attempt": result}, indent=2) + "\n", encoding="utf-8")
             completed.append(ref["task_id"])
         report = {"run_id": run_id, "pilot_seconds": seconds, "segments_completed": completed, "fixture_call_count": 0, "backend": "ncnn_vulkan", "worker_state": "READY_FOR_RETURN"}

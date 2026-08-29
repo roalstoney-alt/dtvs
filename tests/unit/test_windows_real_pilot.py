@@ -41,6 +41,12 @@ class WindowsRealPilotTests(unittest.TestCase):
         self.assertIn('segment_dir / "attempt-A001" / "output"', source)
         self.assertIn("execute_realesrgan_ncnn", source)
 
+    def test_pilot_encodes_png_sequence_with_explicit_frame_rate(self):
+        source = (ROOT / "scripts/windows_real_pilot.py").read_text(encoding="utf-8")
+        self.assertIn('"-framerate", "30000/1001"', source)
+        self.assertIn('"-fps_mode", "cfr"', source)
+        self.assertIn("FFV1_FRAME_COUNT_MISMATCH", source)
+
     def test_windows_pilot_dry_run_is_platform_neutral(self):
         result = subprocess.run(
             [sys.executable, "scripts/windows_real_pilot.py", "run-10s", "--root", r"K:\dtvs", "--dry-run"],
