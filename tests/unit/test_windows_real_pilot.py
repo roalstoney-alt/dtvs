@@ -23,6 +23,11 @@ class WindowsRealPilotTests(unittest.TestCase):
         self.assertIn("-t", command)
         self.assertNotIn("&&", command)
 
+    def test_ffmpeg_extraction_uses_ffmpeg_9_option(self):
+        source = (ROOT / "scripts/windows_real_pilot.py").read_text(encoding="utf-8")
+        self.assertIn('"-fps_mode", "vfr"', source)
+        self.assertNotIn('"-vsync", "0"', source)
+
     def test_real_executor_source_has_no_fixture_fallback(self):
         source = (ROOT / "dtvs/worker/real_ncnn_executor.py").read_text(encoding="utf-8")
         self.assertIn("FIXTURE_FORBIDDEN_FOR_REAL_TASK", source)

@@ -150,7 +150,7 @@ def _run_pilot(root: Path, seconds: int, resume: bool = False) -> int:
             input_frames, output_frames = segment_dir / "input_frames", segment_dir / "output_frames"
             input_frames.mkdir(exist_ok=True); output_frames.mkdir(exist_ok=True)
             start, end = ref["start_frame"], ref["end_frame_exclusive"]
-            extract = ["ffmpeg", "-y", "-i", str(source), "-vf", f"select=between(n\\,{start}\\,{end - 1}),setpts=N/(30000/1001*TB)", "-vsync", "0", str(input_frames / "frame_%08d.png")]
+            extract = ["ffmpeg", "-y", "-i", str(source), "-vf", f"select=between(n\\,{start}\\,{end - 1}),setpts=N/(30000/1001*TB)", "-fps_mode", "vfr", str(input_frames / "frame_%08d.png")]
             cp = run(extract)
             (segment_dir / "extract_command.json").write_text(json.dumps(extract, indent=2) + "\n", encoding="utf-8")
             (segment_dir / "extract_stderr.log").write_text(cp.stderr, encoding="utf-8")
