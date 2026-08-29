@@ -89,8 +89,10 @@ def postinstall_freeze(root: Path) -> int:
     if any(len(v) != 1 for v in candidates.values()):
         return 2
     records = {name: artifact(paths[0]) for name, paths in candidates.items()}
-    exe = locate_one(root / "runtime", "realesrgan-ncnn-vulkan.exe")
+    exe = root / "runtime" / "env-installer" / "realesrgan-stage-20260827T170159Z" / "realesrgan-ncnn-vulkan-v0.2.0-windows" / "realesrgan-ncnn-vulkan.exe"
     records["executable"] = artifact(exe)
+    records["model_param"] = artifact(exe.parent / "models" / "realesrgan-x4plus.param", KNOWN["realesrgan-x4plus.param"])
+    records["model_bin"] = artifact(exe.parent / "models" / "realesrgan-x4plus.bin", KNOWN["realesrgan-x4plus.bin"])
     records["frozen_at"] = now()
     (output / "POST_INSTALL_FREEZE_MANIFEST.json").write_text(json.dumps(records, indent=2) + "\n", encoding="utf-8")
     lines = [f"{v['sha256']}  {Path(v['path']).name}" for v in records.values() if isinstance(v, dict) and v.get("exists")]
