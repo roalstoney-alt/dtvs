@@ -17,11 +17,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+from dtvs.common.hashing import sha256_file
+from dtvs.contracts.signing import verify_document
+from dtvs.worker.real_ncnn_executor import NcnnArtifacts, execute_realesrgan_ncnn
 
 KNOWN = {
     "realesrgan-x4plus.param": "35330ececcea33b6c397a72548e788d5d53becee4734c50b7fada36e89f10a86",
     "realesrgan-x4plus.bin": "713ee713b0353afaa27976f0563a64a5043bd70b9bd8936c2e26e25ebcdbcddf",
 }
+EXE_SHA256 = "07e49f7cbb4ede01ae4dd4c399d3a7e5846e3d2085c3128eff881e55cb7b1a0c"
 
 
 def sha256(path: Path) -> str:
@@ -101,6 +105,97 @@ def postinstall_freeze(root: Path) -> int:
     return 0
 
 
+def _load_plan(root: Path) -> tuple[dict, list[dict], Path, NcnnArtifacts, Path]:
+    plan_path = root / "task-plan" / "real-pilot-task-plan.json"
+    if not plan_path.is_file():
+        raise ValueError("REAL_TASK_PLAN_REQUIRED")
+    plan = json.loads(plan_path.read_text(encoding="utf-8"))
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+    import base64
+    public = Ed25519PublicKey.from_public_bytes(base64.b64decode(plan["public_key_b64"]))
+    if not verify_document(plan, public):
+        raise ValueError("REAL_TASK_PLAN_SIGNATURE_INVALID")
+    for ref in plan.get("segments", []):
+        bundle = json.loads((root / ref["bundle"]).read_text(encoding="utf-8"))
+        if not verify_document(bundle, public):
+            raise ValueError(f"TASK_BUNDLE_SIGNATURE_INVALID:{ref['task_id']}")
+    source = root / plan["source_path"]
+    if not source.is_file() or sha256(source) != plan["source_sha256"]:
+        raise ValueError("SOURCE_HASH_MISMATCH")
+    stage = root / "runtime" / "env-installer" / "realesrgan-stage-20260827T170159Z" / "realesrgan-ncnn-vulkan-v0.2.0-windows"
+    canonical = root / "tools" / "realesrgan-ncnn-vulkan"
+    candidates = [canonical, stage] if (canonical / "realesrgan-ncnn-vulkan.exe").is_file() else [stage]
+    runtime = candidates[0]
+    artifacts = NcnnArtifacts(runtime / "realesrgan-ncnn-vulkan.exe", runtime / "models/realesrgan-x4plus.param", runtime / "models/realesrgan-x4plus.bin", EXE_SHA256, KNOWN["realesrgan-x4plus.param"], KNOWN["realesrgan-x4plus.bin"])
+    return plan, plan["segments"], source, artifacts, runtime / "models"
+
+
+def _run_pilot(root: Path, seconds: int, resume: bool = False) -> int:
+    if platform.system() != "Windows":
+        return 3
+    try:
+        plan, refs, source, artifacts, model_dir = _load_plan(root)
+        selected = refs[:2] if seconds == 10 else refs
+        run_id = plan["run_id"]
+        run_dir = root / "runs" / run_id
+        run_dir.mkdir(parents=True, exist_ok=True)
+        completed = []
+        for ref in selected:
+            segment_dir = run_dir / ref["task_id"]
+            segment_manifest = segment_dir / "segment_manifest.json"
+            if resume and segment_manifest.is_file():
+                completed.append(ref["task_id"])
+                continue
+            segment_dir.mkdir(parents=True, exist_ok=True)
+            input_frames, output_frames = segment_dir / "input_frames", segment_dir / "output_frames"
+            input_frames.mkdir(exist_ok=True); output_frames.mkdir(exist_ok=True)
+            start, end = ref["start_frame"], ref["end_frame_exclusive"]
+            extract = ["ffmpeg", "-y", "-i", str(source), "-vf", f"select=between(n\\,{start}\\,{end - 1}),setpts=N/(30000/1001*TB)", "-vsync", "0", str(input_frames / "frame_%08d.png")]
+            cp = run(extract)
+            (segment_dir / "extract_command.json").write_text(json.dumps(extract, indent=2) + "\n", encoding="utf-8")
+            (segment_dir / "extract_stderr.log").write_text(cp.stderr, encoding="utf-8")
+            if cp.returncode != 0: raise RuntimeError("FRAME_EXTRACT_FAILED")
+            bundle = json.loads((root / ref["bundle"]).read_text(encoding="utf-8"))
+            result = execute_realesrgan_ncnn(bundle, segment_dir / "attempt-A001", input_path=source, command_input_path=input_frames, artifacts=artifacts, model_dir=model_dir)
+            encode_list = segment_dir / "frames.ffconcat"
+            output_files = sorted(output_frames.glob("*.png"))
+            if not output_files: raise RuntimeError("OUTPUT_NOT_FOUND")
+            encode_list.write_text("ffconcat version 1.0\n" + "\n".join(f"file '{p.as_posix()}'" for p in output_files) + "\n", encoding="utf-8")
+            mkv = segment_dir / "segment.ffv1.mkv"
+            enc = run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(encode_list), "-c:v", "ffv1", "-level", "3", "-g", "1", str(mkv)])
+            (segment_dir / "encode_stderr.log").write_text(enc.stderr, encoding="utf-8")
+            if enc.returncode != 0: raise RuntimeError("FFV1_ENCODE_FAILED")
+            segment_manifest.write_text(json.dumps({"task_id": ref["task_id"], "start_frame": start, "end_frame_exclusive": end, "input_frames": len(list(input_frames.glob("*.png"))), "output_frames": len(output_files), "ffv1": str(mkv), "worker_state": "READY_FOR_RETURN", "fixture_call_count": 0, "attempt": result}, indent=2) + "\n", encoding="utf-8")
+            completed.append(ref["task_id"])
+        report = {"run_id": run_id, "pilot_seconds": seconds, "segments_completed": completed, "fixture_call_count": 0, "backend": "ncnn_vulkan", "worker_state": "READY_FOR_RETURN"}
+        (run_dir / "pilot_result.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+        return 0
+    except Exception as exc:
+        print(str(exc), file=sys.stderr)
+        return 4
+
+
+def _collect_evidence(root: Path) -> int:
+    try:
+        plan, _, _, _, _ = _load_plan(root)
+        run_dir = root / "runs" / plan["run_id"]
+        if not run_dir.is_dir():
+            raise ValueError("RUN_NOT_FOUND")
+        output = root / "output"; output.mkdir(parents=True, exist_ok=True)
+        zip_path = output / f"DTVS-WINDOWS-1MIN-EVIDENCE-{plan['run_id']}.zip"
+        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as archive:
+            for base in [root / "output", root / "task-plan", run_dir]:
+                if not base.exists(): continue
+                for path in sorted(base.rglob("*")):
+                    if path.is_file() and path != zip_path and path.suffix.lower() != ".png":
+                        archive.write(path, path.relative_to(root).as_posix())
+        (zip_path.with_suffix(zip_path.suffix + ".sha256")).write_text(f"{sha256(zip_path)}  {zip_path.name}\n", encoding="ascii")
+        return 0
+    except Exception as exc:
+        print(str(exc), file=sys.stderr)
+        return 4
+
+
 def dry_run(root: Path) -> int:
     print(json.dumps({"platform": platform.system(), "root": str(root), "actions": ["verify-inputs", "postinstall-freeze", "run-10s", "run-1min", "resume-1min", "collect-evidence"], "windows_execution": platform.system() == "Windows", "fixture_fallback": False}, indent=2))
     return 0
@@ -116,10 +211,11 @@ def main() -> int:
         return dry_run(args.root) if args.dry_run else 3
     if args.action == "verify-inputs": return verify_inputs(args.root)
     if args.action == "postinstall-freeze": return postinstall_freeze(args.root)
-    if not (args.root / "input" / "real-pilot-task-plan.json").is_file():
-        print("REAL_TASK_PLAN_REQUIRED", file=sys.stderr)
-        return 4
-    raise SystemExit("REAL_PILOT_ORCHESTRATION_NOT_INCLUDED_IN_THIS_CANDIDATE")
+    if args.action == "run-10s": return _run_pilot(args.root, 10)
+    if args.action == "run-1min": return _run_pilot(args.root, 60)
+    if args.action == "resume-1min": return _run_pilot(args.root, 60, resume=True)
+    if args.action == "collect-evidence": return _collect_evidence(args.root)
+    return 4
 
 
 if __name__ == "__main__":

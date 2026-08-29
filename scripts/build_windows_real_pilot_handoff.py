@@ -7,10 +7,21 @@ import shutil
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
+import base64
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 NAME = "DTVS-Windows-Real-Pilot-Handoff-v0.2.0"
+sys.path.insert(0, str(ROOT))
+from dtvs.contracts.models import FrameRange, TaskBundle
+from dtvs.contracts.signing import load_private_key, public_key_bytes, sign_document
+
+SOURCE_SHA256 = "d0760e254956b7a248d4e110683e3b91b4bd818fcb85aa1dee673b08be742b7c"
+EXE_SHA256 = "07e49f7cbb4ede01ae4dd4c399d3a7e5846e3d2085c3128eff881e55cb7b1a0c"
+PARAM_SHA256 = "35330ececcea33b6c397a72548e788d5d53becee4734c50b7fada36e89f10a86"
+BIN_SHA256 = "713ee713b0353afaa27976f0563a64a5043bd70b9bd8936c2e26e25ebcdbcddf"
+PARAMETERS_SHA256 = "1456b3824417df78d3aa72372f38730b008a3712114262a310f6f5719a1d5403"
 
 
 def sha256(path: Path) -> str:
@@ -46,6 +57,31 @@ def main() -> int:
         source, target = ROOT / rel, staging / rel
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
+    key_paths = sorted((ROOT / "runs").glob("**/center/private/signing_keys/private_key.pem"))
+    if len(key_paths) != 1:
+        raise SystemExit("CENTER_TASK_SIGNING_KEY_UNAVAILABLE")
+    key = load_private_key(key_paths[0])
+    plan_dir = staging / "task-plan"
+    plan_dir.mkdir(parents=True, exist_ok=True)
+    refs = []
+    for idx in range(12):
+        start, end = idx * 150, min((idx + 1) * 150, 1799)
+        bundle = TaskBundle(
+            task_id=f"DTVS-P001-T{idx + 1:04d}", bundle_version=1, asset_id="sha256:" + SOURCE_SHA256,
+            core=FrameRange(start, end), context=FrameRange(start, end),
+            input={"path_or_object_key": "input/pilot-source.mp4", "sha256": SOURCE_SHA256},
+            execution={"worker_pack_version": "0.2.0-pilot", "pipeline_id": "dtvs.realesrgan-ncnn-vulkan.x4.pilot.v1", "model_sha256": BIN_SHA256, "parameters_sha256": PARAMETERS_SHA256, "random_seed": 20260827, "execution_mode": "real_render", "backend": "ncnn_vulkan", "semantic_model_id": "RealESRGAN_x4plus", "backend_artifact_id": "realesrgan_x4plus_ncnn_vulkan_v0.2.0", "executable_sha256": EXE_SHA256, "param_sha256": PARAM_SHA256, "bin_sha256": BIN_SHA256, "scale": 4, "tile": 64},
+            output={"width": 2880, "height": 1920, "fps_num": 30000, "fps_den": 1001, "expected_core_frames": end - start},
+            lease={"expires_at": "2099-01-01T00:00:00+00:00", "checkpoint_frames": end - start},
+            verification={"upload_threshold": 90, "minimum_component_score": 70},
+        ).to_dict()
+        signed = sign_document(bundle, key, "dtvs-p001-center")
+        name = f"task_bundle_{idx + 1:04d}.json"
+        (plan_dir / name).write_text(json.dumps(signed, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        refs.append({"task_id": signed["task_id"], "bundle": f"task-plan/{name}", "start_frame": start, "end_frame_exclusive": end})
+    plan = {"schema_version": "0.2.2", "run_id": "DTVS-P001-WIN-1MIN", "backend": "ncnn_vulkan", "execution_mode": "real_render", "source_path": "input/pilot-source.mp4", "source_sha256": SOURCE_SHA256, "public_key_b64": base64.b64encode(public_key_bytes(key)).decode("ascii"), "segments": refs, "worker_pack_version": "0.2.0-pilot"}
+    (plan_dir / "real-pilot-task-plan.json").write_text(json.dumps(sign_document(plan, key, "dtvs-p001-center"), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (plan_dir / "task_index.json").write_text(json.dumps({"schema_version": "0.2.2", "run_id": plan["run_id"], "public_key": plan["public_key_b64"], "tasks": refs}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (staging / "PILOT_HANDOFF_README_CN.txt").write_text(
         "DTVS Windows Real Video Pilot Handoff v0.2.0-pilot\n\n"
         "This is a pilot handoff, not a formal Worker release or installer.\n"
@@ -61,7 +97,7 @@ def main() -> int:
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(staging.rglob("*")):
             if path.is_file():
-                archive.write(path, path.relative_to(DIST).as_posix())
+                archive.write(path, path.relative_to(staging).as_posix())
     manifest = {
         "schema_version": "0.2.2",
         "handoff_version": "0.2.0-pilot",

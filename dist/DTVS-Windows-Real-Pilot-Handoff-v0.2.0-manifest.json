@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-08-29T04:29:45.420978+00:00",
+  "built_at": "2026-08-29T05:20:36.704259+00:00",
   "excluded": [
     "secrets",
     "private_keys",
@@ -301,9 +301,9 @@
       "sha256": "9ca09d6e15fa011938788245707af76ab99495609c9f22da11d26bba68e9693d"
     },
     {
-      "bytes": 6130,
+      "bytes": 6196,
       "relative_path": "dtvs/worker/real_ncnn_executor.py",
-      "sha256": "1df0afe3b8dc40fadf0c488acdac7b95ec5a41914d2ca9516c2154c130797cc7"
+      "sha256": "233ac7ea372acce757ea892992ec73293c9b7b69d292bbb6e536642977c20fda"
     },
     {
       "bytes": 1383,
@@ -346,9 +346,79 @@
       "sha256": "a1e9fcb72504456dbea93d5b154e8021d1a8a32d0eb1bf1364eaba55702db62f"
     },
     {
-      "bytes": 6949,
+      "bytes": 13202,
       "relative_path": "scripts/windows_real_pilot.py",
-      "sha256": "0a310168284e5b62f91feec2d6ec32830eae04ee45903895e50beb58150f0626"
+      "sha256": "4cedb2d5ab9dadc9360f5cd0d5a8636640947ea5722ed375f04579e1a842f2c2"
+    },
+    {
+      "bytes": 2492,
+      "relative_path": "task-plan/real-pilot-task-plan.json",
+      "sha256": "b9d79685c4a6fc2c4b2ca59c4c01bb8e2cbf361cc7eddc4dd81d9b9d10d2015c"
+    },
+    {
+      "bytes": 1786,
+      "relative_path": "task-plan/task_bundle_0001.json",
+      "sha256": "1fe6e42bb468ea0ccec29ca7e900cfcf056409eb9b56ec8667dbfdd04df277e1"
+    },
+    {
+      "bytes": 1790,
+      "relative_path": "task-plan/task_bundle_0002.json",
+      "sha256": "e2c0274f515fb759a065eb0fac54cba9633de9226702ae2b337d8e2fa1f71b82"
+    },
+    {
+      "bytes": 1790,
+      "relative_path": "task-plan/task_bundle_0003.json",
+      "sha256": "09c509d11646150150301f00aa09b2d15922140670e8b9040f62e96cd37b80a5"
+    },
+    {
+      "bytes": 1790,
+      "relative_path": "task-plan/task_bundle_0004.json",
+      "sha256": "12ccc2a7f9075a9cc74958fb3fbba8b7128d4ea470b6f20c1d3acb6f0a729ddf"
+    },
+    {
+      "bytes": 1790,
+      "relative_path": "task-plan/task_bundle_0005.json",
+      "sha256": "e8425a2c489cf4727311acad286a6a9c97027cb8ce667844e6c3d818836394a0"
+    },
+    {
+      "bytes": 1790,
+      "relative_path": "task-plan/task_bundle_0006.json",
+      "sha256": "1f01b959eb4248d0a38ceff6273d7f7b2b5520770e7b0431183082274f56a76a"
+    },
+    {
+      "bytes": 1792,
+      "relative_path": "task-plan/task_bundle_0007.json",
+      "sha256": "e23a8b7d7284582bc421179b55cedb1b655aa20d9acfb79d4e41ebc98f726340"
+    },
+    {
+      "bytes": 1794,
+      "relative_path": "task-plan/task_bundle_0008.json",
+      "sha256": "002b98209515ca0dd93b4271ea7608f3f16562d7c97cff602ec1041bb19772ca"
+    },
+    {
+      "bytes": 1794,
+      "relative_path": "task-plan/task_bundle_0009.json",
+      "sha256": "1fbf7e8820406f9a453af44f411bac2b189d93e8e3faf7deaa90f315b27c8070"
+    },
+    {
+      "bytes": 1794,
+      "relative_path": "task-plan/task_bundle_0010.json",
+      "sha256": "a358d169fd4cb32da28ecfc00b25c190c4aee2b365ea1ca6306e2cbe8ced8572"
+    },
+    {
+      "bytes": 1794,
+      "relative_path": "task-plan/task_bundle_0011.json",
+      "sha256": "c0c80e9ad1b69aab134916c3faa40d19060ed9eba572529a8cd667e85d8c6c2e"
+    },
+    {
+      "bytes": 1794,
+      "relative_path": "task-plan/task_bundle_0012.json",
+      "sha256": "8204cdd2bc9a739f76f5024bfaa9cd53f7279ddb736cb168ee5a5e1c8210e709"
+    },
+    {
+      "bytes": 2064,
+      "relative_path": "task-plan/task_index.json",
+      "sha256": "83ff4542358c3d57a55a032af2a5194f6b9d2f935fa49181da8ca40b75828c3d"
     }
   ],
   "formal_release": false,
@@ -361,8 +431,8 @@
   "windows_pass_claimed": false,
   "worker_pack_version": "0.2.0-pilot",
   "zip": {
-    "bytes": 50808,
+    "bytes": 60766,
     "filename": "DTVS-Windows-Real-Pilot-Handoff-v0.2.0.zip",
-    "sha256": "0dc0375d46a302d2a3a48fc45da9fbd703db2618efced87b4d2138e99103d358"
+    "sha256": "60ec6e2b07ec4f2e5013897c9e9b0c73abacc823657f84eda4f00018e3e7283b"
   }
 }

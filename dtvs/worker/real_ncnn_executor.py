@@ -65,6 +65,7 @@ def execute_realesrgan_ncnn(
     attempt_dir: Path,
     *,
     input_path: Path,
+    command_input_path: Path | None = None,
     artifacts: NcnnArtifacts,
     model_dir: Path,
     runner: Callable[..., subprocess.CompletedProcess[str]] = subprocess.run,
@@ -83,7 +84,7 @@ def execute_realesrgan_ncnn(
     _require_hash(artifacts.bin, artifacts.bin_sha256, "MODEL_BIN")
     attempt_dir.mkdir(parents=True, exist_ok=True)
     output_path = attempt_dir / "output"
-    command = build_realesrgan_command(artifacts.executable, input_path, output_path, model_dir, tile=bundle.get("execution", {}).get("tile", 64))
+    command = build_realesrgan_command(artifacts.executable, command_input_path or input_path, output_path, model_dir, tile=bundle.get("execution", {}).get("tile", 64))
     started = datetime.now(timezone.utc).isoformat()
     process = runner(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
     ended = datetime.now(timezone.utc).isoformat()
