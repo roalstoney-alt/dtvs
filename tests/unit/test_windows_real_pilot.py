@@ -31,6 +31,10 @@ class WindowsRealPilotTests(unittest.TestCase):
     def test_real_executor_source_has_no_fixture_fallback(self):
         source = (ROOT / "dtvs/worker/real_ncnn_executor.py").read_text(encoding="utf-8")
         self.assertIn("FIXTURE_FORBIDDEN_FOR_REAL_TASK", source)
+
+    def test_real_executor_precreates_batch_output_directory(self):
+        source = (ROOT / "dtvs/worker/real_ncnn_executor.py").read_text(encoding="utf-8")
+        self.assertIn('output_path.mkdir(parents=True, exist_ok=True)', source)
         self.assertIn("execute_realesrgan_ncnn", source)
 
     def test_windows_pilot_dry_run_is_platform_neutral(self):

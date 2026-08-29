@@ -106,6 +106,9 @@ def execute_realesrgan_ncnn(
     _require_hash(artifacts.bin, artifacts.bin_sha256, "MODEL_BIN")
     attempt_dir.mkdir(parents=True, exist_ok=True)
     output_path = attempt_dir / "output"
+    # NCNN treats an existing directory as a batch output target. Without it,
+    # a suffix-less path is parsed as an image filename and is rejected.
+    output_path.mkdir(parents=True, exist_ok=True)
     command = build_realesrgan_command(artifacts.executable, command_input_path or input_path, output_path, model_dir, tile=bundle.get("execution", {}).get("tile", 64))
     started = datetime.now(timezone.utc).isoformat()
     process = runner(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
