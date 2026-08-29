@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "segments": [
+    {
+      "task_id": "DTVS-P001-T0001",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "task_id": "DTVS-P001-T0002",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "task_id": "DTVS-P001-T0003",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "task_id": "DTVS-P001-T0004",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "task_id": "DTVS-P001-T0005",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "task_id": "DTVS-P001-T0006",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "task_id": "DTVS-P001-T0007",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "task_id": "DTVS-P001-T0008",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "task_id": "DTVS-P001-T0009",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "task_id": "DTVS-P001-T0010",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "task_id": "DTVS-P001-T0011",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "task_id": "DTVS-P001-T0012",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

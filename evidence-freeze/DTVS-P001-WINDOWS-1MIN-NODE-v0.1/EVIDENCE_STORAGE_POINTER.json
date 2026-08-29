@@ -1,0 +1,10 @@
+{
+  "storage_type": "external_volume",
+  "storage_path": "/Volumes/SU/dtvs/output/DTVS-WINDOWS-1MIN-EVIDENCE-DTVS-P001-WIN-1MIN",
+  "large_artifacts_committed_to_git": false,
+  "large_artifacts": [
+    "12 FFV1 segment files",
+    "temporary frames"
+  ],
+  "checked_at": "2026-08-29T13:01:48.446561+00:00"
+}
