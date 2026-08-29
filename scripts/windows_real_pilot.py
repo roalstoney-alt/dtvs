@@ -247,7 +247,14 @@ def _collect_evidence(root: Path) -> int:
                 for path in sorted(base.rglob("*")):
                     if path.is_file() and path != zip_path and path.suffix.lower() != ".png":
                         archive.write(path, path.relative_to(root).as_posix())
-        (zip_path.with_suffix(zip_path.suffix + ".sha256")).write_text(f"{sha256(zip_path)}  {zip_path.name}\n", encoding="ascii")
+        hash_path = zip_path.with_suffix(zip_path.suffix + ".sha256")
+        digest = sha256(zip_path)
+        hash_path.write_text(f"{digest}  {zip_path.name}\n", encoding="ascii")
+        print("COLLECT_EVIDENCE_READY")
+        print(f"EVIDENCE_ZIP={zip_path}")
+        print(f"EVIDENCE_ZIP_BYTES={zip_path.stat().st_size}")
+        print(f"EVIDENCE_ZIP_SHA256={digest}")
+        print(f"EVIDENCE_SHA256_FILE={hash_path}")
         return 0
     except Exception as exc:
         print(str(exc), file=sys.stderr)

@@ -89,6 +89,8 @@ def main() -> int:
         "real_render_executor=ncnn_vulkan; formal_release=false; installer=false.\n"
         "Real-ESRGAN executables, models, source video, secrets, and Windows results are not bundled.\n"
         "Run VERIFY_INPUTS.cmd first. Run 10 seconds before the one-minute pilot.\n"
+        "After completion run COLLECT_EVIDENCE.cmd. Copy only the two files printed\n"
+        "as EVIDENCE_ZIP and EVIDENCE_SHA256_FILE back to the Mac.\n"
         "The Mac environment must not be used to claim Windows PASS.\n",
         encoding="utf-8",
     )

@@ -54,6 +54,12 @@ class WindowsRealPilotTests(unittest.TestCase):
         self.assertIn("UNIFIED_REPORT_DIR=", source)
         self.assertIn('task / "attempt-A001" / "checkpoint.json"', source)
 
+    def test_collect_evidence_prints_only_return_files(self):
+        source = (ROOT / "scripts/windows_real_pilot.py").read_text(encoding="utf-8")
+        self.assertIn("COLLECT_EVIDENCE_READY", source)
+        self.assertIn("EVIDENCE_ZIP=", source)
+        self.assertIn("EVIDENCE_SHA256_FILE=", source)
+
     def test_windows_pilot_dry_run_is_platform_neutral(self):
         result = subprocess.run(
             [sys.executable, "scripts/windows_real_pilot.py", "run-10s", "--root", r"K:\dtvs", "--dry-run"],
