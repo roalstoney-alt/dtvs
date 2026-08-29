@@ -35,6 +35,10 @@ class WindowsRealPilotTests(unittest.TestCase):
     def test_real_executor_precreates_batch_output_directory(self):
         source = (ROOT / "dtvs/worker/real_ncnn_executor.py").read_text(encoding="utf-8")
         self.assertIn('output_path.mkdir(parents=True, exist_ok=True)', source)
+
+    def test_pilot_encodes_executor_attempt_output(self):
+        source = (ROOT / "scripts/windows_real_pilot.py").read_text(encoding="utf-8")
+        self.assertIn('segment_dir / "attempt-A001" / "output"', source)
         self.assertIn("execute_realesrgan_ncnn", source)
 
     def test_windows_pilot_dry_run_is_platform_neutral(self):

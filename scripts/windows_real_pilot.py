@@ -158,7 +158,10 @@ def _run_pilot(root: Path, seconds: int, resume: bool = False) -> int:
             bundle = json.loads((root / ref["bundle"]).read_text(encoding="utf-8"))
             result = execute_realesrgan_ncnn(bundle, segment_dir / "attempt-A001", input_path=source, command_input_path=input_frames, artifacts=artifacts, model_dir=model_dir)
             encode_list = segment_dir / "frames.ffconcat"
-            output_files = sorted(output_frames.glob("*.png"))
+            # The executor owns the attempt output directory. Keep the
+            # encoder pointed at that directory instead of a separate,
+            # never-populated sibling.
+            output_files = sorted((segment_dir / "attempt-A001" / "output").glob("*.png"))
             if not output_files: raise RuntimeError("OUTPUT_NOT_FOUND")
             encode_list.write_text("ffconcat version 1.0\n" + "\n".join(f"file '{p.as_posix()}'" for p in output_files) + "\n", encoding="utf-8")
             mkv = segment_dir / "segment.ffv1.mkv"
