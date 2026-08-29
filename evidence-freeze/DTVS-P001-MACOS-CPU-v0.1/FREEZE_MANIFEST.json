@@ -1,0 +1,56 @@
+{
+  "artifacts": {
+    "input_sha256": "e8ce0d44bde341cc9fb64ee79bff09c7842b7057ecc90fb4ae041367b622f4e9",
+    "model_bytes": 67040989,
+    "model_sha256": "4fa0d38905f75ac06eb49a7951b426670021be3018265fd191d2125df9d682f1",
+    "output_dimensions": "2880x1920",
+    "output_sha256": "1ab652a12e937820006d12e614ec91ee54f0d1e87edc0c392925ec9ffb945d55"
+  },
+  "evidence_id": "DTVS-P001-MACOS-CPU-v0.1",
+  "fixture_used": false,
+  "freeze_created_at": "2026-08-29T02:19:04.167389+00:00",
+  "freeze_generator": "DTVS evidence freeze generator v0.1 (Python 3.11.0)",
+  "git_tree_hash": "561fe7a67a210589f0fbe70a4a0a951014e07799",
+  "inference": {
+    "device": "cpu",
+    "duration_seconds": 467.79064681599266,
+    "exit_code": 0,
+    "max_rss_bytes": 693026816,
+    "outscale": 4,
+    "pre_pad": 0,
+    "precision": "fp32",
+    "tile": 64,
+    "tile_pad": 10
+  },
+  "ncnn_vulkan": {
+    "node_rejected": false,
+    "status": "BACKEND_UNAVAILABLE"
+  },
+  "node_usable": true,
+  "original_evidence_relative_paths": [
+    "runs/DTVS-P001-20260827T065301Z/local-real-render-proof/smoke/input.png",
+    "runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/cpu-smoke/output_x4.png",
+    "runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/cpu-smoke/smoke_command.json",
+    "runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/cpu-smoke/smoke_result.json",
+    "runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/cpu-smoke/smoke_stdout.log",
+    "runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/cpu-smoke/smoke_stderr.log",
+    "runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/environment.json",
+    "runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/requirements-lock.txt",
+    "runs/DTVS-P001-20260827T065301Z/local-real-render-proof/smoke/smoke_result.json",
+    "runs/DTVS-P001-20260827T065301Z/local-real-render-proof/ncnn_vulkan_classification.json",
+    "runs/DTVS-P001-20260827T065301Z/local-real-render-proof/toolchain/archive_verification.json"
+  ],
+  "runtime": {
+    "architecture": "x86_64",
+    "basicsr_version": "1.4.2",
+    "os": "macOS 13.7.8",
+    "python_version": "3.11.0",
+    "realesrgan_source_commit": "685d429c81888252bdb10f56c7754baededc3823",
+    "torch_version": "2.2.2",
+    "torchvision_version": "0.17.2"
+  },
+  "signature_note": "This freeze manifest seals hashes after execution; it is not a runtime signature from the original execution.",
+  "source_commit": "a58bbfd8734c7db0061f4feca9a8de6799ae2c53",
+  "source_tag": "dtvs-p001-macos-cpu-smoke-v0.1",
+  "status": "PASS"
+}

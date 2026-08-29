@@ -1,0 +1,11 @@
+{
+  "evidence_id": "DTVS-P001-MACOS-CPU-v0.1",
+  "fixture_used": false,
+  "inference_network_used": false,
+  "model_source": "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth",
+  "realesrgan_source_commit": "685d429c81888252bdb10f56c7754baededc3823",
+  "render_source": "official xinntao/Real-ESRGAN",
+  "source_commit": "a58bbfd8734c7db0061f4feca9a8de6799ae2c53",
+  "source_repository": "DTVS",
+  "source_tag": "dtvs-p001-macos-cpu-smoke-v0.1"
+}

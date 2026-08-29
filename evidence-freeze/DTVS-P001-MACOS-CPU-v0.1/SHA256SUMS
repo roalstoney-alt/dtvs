@@ -1,0 +1,11 @@
+e8ce0d44bde341cc9fb64ee79bff09c7842b7057ecc90fb4ae041367b622f4e9  runs/DTVS-P001-20260827T065301Z/local-real-render-proof/smoke/input.png
+1ab652a12e937820006d12e614ec91ee54f0d1e87edc0c392925ec9ffb945d55  runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/cpu-smoke/output_x4.png
+f88b1eae882a36667f2f31fb71f99f4ffa64c0f63b55ec6cd57e2de3050e27a0  runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/cpu-smoke/smoke_command.json
+10311e8284b9aed70614ca90bb9d2923e4ddaae89909386e20716f4371348e8b  runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/cpu-smoke/smoke_result.json
+7781817d6e45e85951d6acb86eb6257209019130f57951526306c504c8227fa9  runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/cpu-smoke/smoke_stdout.log
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/cpu-smoke/smoke_stderr.log
+dd0c23908b71d787df7b9ca0b514e72fc8435a7d3e1b282d01f041262b9d636e  runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/environment.json
+9f1037bdf0491b7be7365ff83d51fbb462184e26060caeb6525bd89c1c23a37d  runs/DTVS-P001-20260827T065301Z/local-real-render-proof/cpu-runtime/requirements-lock.txt
+29ce57ddea2aa30051fed82ce423c78c5f2ab2e4f8850a165715bf450ee79d80  runs/DTVS-P001-20260827T065301Z/local-real-render-proof/smoke/smoke_result.json
+be43b75eea0f0936f2e532dca067f31b13bb23283e40fb238a7b2ccd5f0b1cb1  runs/DTVS-P001-20260827T065301Z/local-real-render-proof/ncnn_vulkan_classification.json
+e69f950e52dd5dc131fd217c5104647ab35082faa918e35331b181be44e8a786  runs/DTVS-P001-20260827T065301Z/local-real-render-proof/toolchain/archive_verification.json
