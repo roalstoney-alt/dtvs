@@ -216,7 +216,7 @@ def _write_unified_reports(run_dir: Path, plan: dict, refs: list[dict], complete
     (run_dir / "WINDOWS_1MIN_RESULT.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     ledger = {"run_id": plan["run_id"], "entries": [{"task_id": x["task_id"], "state": "READY_FOR_RETURN" if x["task_id"] in completed else "FAILED"} for x in refs], "fixture_call_count": 0}
     (run_dir / "WINDOWS_1MIN_TASK_LEDGER.json").write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
-    checkpoint = {"run_id": plan["run_id"], "completed_segments": completed, "completed_segments_recomputed": 0, "completed_segments_verified": all((run_dir / task / "checkpoint.json").is_file() for task in completed), "attempt_history_preserved": True}
+    checkpoint = {"run_id": plan["run_id"], "completed_segments": completed, "completed_segments_recomputed": 0, "completed_segments_verified": all((run_dir / task / "attempt-A001" / "checkpoint.json").is_file() for task in completed), "attempt_history_preserved": True}
     (run_dir / "WINDOWS_1MIN_CHECKPOINT_REPORT.json").write_text(json.dumps(checkpoint, indent=2) + "\n", encoding="utf-8")
     boundary = {"run_id": plan["run_id"], "segment_count": len(ordered), "core_missing_frames": 0 if coverage_pass else None, "core_duplicate_frames": 0 if coverage_pass else None, "coverage_status": "PASS" if coverage_pass else "FAIL", "segments": [{"task_id": x["task_id"], "start_frame": x["start_frame"], "end_frame_exclusive": x["end_frame_exclusive"]} for x in ordered]}
     (run_dir / "WINDOWS_1MIN_BOUNDARY_QC.json").write_text(json.dumps(boundary, indent=2) + "\n", encoding="utf-8")

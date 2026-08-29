@@ -52,6 +52,7 @@ class WindowsRealPilotTests(unittest.TestCase):
         for name in ["WINDOWS_1MIN_RESULT.json", "WINDOWS_1MIN_REPORT.md", "WINDOWS_1MIN_RESOURCE_REPORT.json", "WINDOWS_1MIN_TASK_LEDGER.json", "WINDOWS_1MIN_BOUNDARY_QC.json", "WINDOWS_1MIN_CHECKPOINT_REPORT.json", "WINDOWS_1MIN_EVIDENCE_INDEX.json", "WINDOWS_1MIN_SHA256SUMS.txt"]:
             self.assertIn(name, source)
         self.assertIn("UNIFIED_REPORT_DIR=", source)
+        self.assertIn('task / "attempt-A001" / "checkpoint.json"', source)
 
     def test_windows_pilot_dry_run_is_platform_neutral(self):
         result = subprocess.run(
