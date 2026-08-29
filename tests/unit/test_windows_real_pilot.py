@@ -47,6 +47,12 @@ class WindowsRealPilotTests(unittest.TestCase):
         self.assertIn('"-fps_mode", "cfr"', source)
         self.assertIn("FFV1_FRAME_COUNT_MISMATCH", source)
 
+    def test_one_minute_pilot_writes_unified_reports(self):
+        source = (ROOT / "scripts/windows_real_pilot.py").read_text(encoding="utf-8")
+        for name in ["WINDOWS_1MIN_RESULT.json", "WINDOWS_1MIN_REPORT.md", "WINDOWS_1MIN_RESOURCE_REPORT.json", "WINDOWS_1MIN_TASK_LEDGER.json", "WINDOWS_1MIN_BOUNDARY_QC.json", "WINDOWS_1MIN_CHECKPOINT_REPORT.json", "WINDOWS_1MIN_EVIDENCE_INDEX.json", "WINDOWS_1MIN_SHA256SUMS.txt"]:
+            self.assertIn(name, source)
+        self.assertIn("UNIFIED_REPORT_DIR=", source)
+
     def test_windows_pilot_dry_run_is_platform_neutral(self):
         result = subprocess.run(
             [sys.executable, "scripts/windows_real_pilot.py", "run-10s", "--root", r"K:\dtvs", "--dry-run"],

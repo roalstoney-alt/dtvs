@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-08-29T06:28:28.465135+00:00",
+  "built_at": "2026-08-29T11:47:49.045231+00:00",
   "excluded": [
     "secrets",
     "private_keys",
@@ -351,9 +351,9 @@
       "sha256": "a1e9fcb72504456dbea93d5b154e8021d1a8a32d0eb1bf1364eaba55702db62f"
     },
     {
-      "bytes": 13957,
+      "bytes": 18178,
       "relative_path": "scripts/windows_real_pilot.py",
-      "sha256": "309242956637413cc9e0230291298ca9e32eab6ccba7731dd06eaca489d6774a"
+      "sha256": "f7981321c869f74ff613267b89459bd71a133a54330e809ce0ca79a805d7959f"
     },
     {
       "bytes": 2492,
@@ -436,8 +436,8 @@
   "windows_pass_claimed": false,
   "worker_pack_version": "0.2.0-pilot",
   "zip": {
-    "bytes": 61742,
+    "bytes": 62765,
     "filename": "DTVS-Windows-Real-Pilot-Handoff-v0.2.0.zip",
-    "sha256": "b129cb450d871d969aa17ac3ee95a728f9bb0a7eb4c969ff922f18e0f15a7838"
+    "sha256": "e51081312185919822a9c2328206a0415a03a9fcd910623c005f30e43c4a40b6"
   }
 }
