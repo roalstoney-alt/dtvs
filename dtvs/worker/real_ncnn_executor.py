@@ -15,7 +15,12 @@ from pathlib import Path
 from typing import Any, Callable, Sequence
 
 from dtvs.common.hashing import sha256_file
-from dtvs.contracts.validation import validate_document
+try:
+    from dtvs.contracts.validation import validate_document
+except ModuleNotFoundError as exc:
+    if exc.name != "jsonschema":
+        raise
+    validate_document = None
 
 
 @dataclass(frozen=True)
@@ -51,6 +56,20 @@ def _require_hash(path: Path, expected: str, label: str) -> None:
         raise ValueError(f"{label}_HASH_MISMATCH")
 
 
+def _validate_bundle_fallback(bundle: dict[str, Any]) -> None:
+    required = {"schema_version", "task_id", "bundle_version", "asset_id", "core", "context", "input", "execution", "output", "lease", "verification", "signature"}
+    if bundle.get("schema_version") != "0.2.2" or not required.issubset(bundle):
+        raise ValueError("TASK_BUNDLE_SCHEMA_INVALID")
+    if bundle.get("execution", {}).get("execution_mode") != "real_render":
+        raise ValueError("REAL_RENDER_MODE_REQUIRED")
+    if bundle.get("execution", {}).get("backend") != "ncnn_vulkan":
+        raise ValueError("UNSUPPORTED_PIPELINE")
+    for section in ("core", "context"):
+        value = bundle[section]
+        if not isinstance(value.get("start_frame"), int) or not isinstance(value.get("end_frame_exclusive"), int) or value["end_frame_exclusive"] <= value["start_frame"]:
+            raise ValueError("TASK_BUNDLE_SCHEMA_INVALID")
+
+
 def _ffprobe(path: Path, runner: Callable[..., subprocess.CompletedProcess[str]]) -> dict[str, Any]:
     if shutil.which("ffprobe") is None:
         raise ValueError("FFPROBE_REQUIRED")
@@ -75,7 +94,10 @@ def execute_realesrgan_ncnn(
         raise ValueError("REAL_RENDER_MODE_REQUIRED")
     if bundle.get("execution", {}).get("backend") != "ncnn_vulkan":
         raise ValueError("UNSUPPORTED_PIPELINE")
-    validate_document(bundle, Path(__file__).resolve().parents[2] / "schemas/task_bundle_v022.schema.json")
+    if validate_document is None:
+        _validate_bundle_fallback(bundle)
+    else:
+        validate_document(bundle, Path(__file__).resolve().parents[2] / "schemas/task_bundle_v022.schema.json")
     expected_input = bundle["input"]["sha256"].removeprefix("sha256:")
     if sha256_file(input_path) != expected_input:
         raise ValueError("INPUT_HASH_MISMATCH")

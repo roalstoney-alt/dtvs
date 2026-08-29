@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-08-29T05:20:36.704259+00:00",
+  "built_at": "2026-08-29T05:30:04.737926+00:00",
   "excluded": [
     "secrets",
     "private_keys",
@@ -301,9 +301,9 @@
       "sha256": "9ca09d6e15fa011938788245707af76ab99495609c9f22da11d26bba68e9693d"
     },
     {
-      "bytes": 6196,
+      "bytes": 7319,
       "relative_path": "dtvs/worker/real_ncnn_executor.py",
-      "sha256": "233ac7ea372acce757ea892992ec73293c9b7b69d292bbb6e536642977c20fda"
+      "sha256": "f65d9dee4bc001d56a21b19426c8192dc06b957757900730d4e25135164dae81"
     },
     {
       "bytes": 1383,
@@ -334,6 +334,11 @@
       "bytes": 1687,
       "relative_path": "dtvs_worker_cli.py",
       "sha256": "6588b134cad3383c3b8ee819a0852ea01ff76ebd60a47017ba65cb74b6f66fe1"
+    },
+    {
+      "bytes": 262,
+      "relative_path": "requirements-windows.txt",
+      "sha256": "fd453c7f5be6d5d921123f052873a748ca70d0fbc7dec060dbbcf5bacbfed225"
     },
     {
       "bytes": 1908,
@@ -431,8 +436,8 @@
   "windows_pass_claimed": false,
   "worker_pack_version": "0.2.0-pilot",
   "zip": {
-    "bytes": 60766,
+    "bytes": 61377,
     "filename": "DTVS-Windows-Real-Pilot-Handoff-v0.2.0.zip",
-    "sha256": "60ec6e2b07ec4f2e5013897c9e9b0c73abacc823657f84eda4f00018e3e7283b"
+    "sha256": "5b3143dde81ef9a89d646282b697566bfd3f141a38e760152c57c39b75b5084e"
   }
 }

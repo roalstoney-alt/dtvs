@@ -52,6 +52,7 @@ def main() -> int:
         "docs/WINDOWS_REAL_PILOT_HANDOFF_V0.2.0_CN.txt",
         "configs/windows_real_pilot_v020.json",
         "schemas/windows_real_pilot_manifest.schema.json",
+        "requirements-windows.txt",
     ]
     for rel in files:
         source, target = ROOT / rel, staging / rel
