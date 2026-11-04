@@ -22,7 +22,7 @@ from dtvs.scheduling.p0c1_reference_replay import (
     NAMESPACE, ROUTES, parse_exports, reconstruct, validate_report_statistics,
 )
 
-VERSION = "p0c1-five-output-inspector-v0.1"
+VERSION = "p0c1-five-output-inspector-v0.2"
 DATA_NAMES = {"report.json", "report.md", "observations.csv", "decisions.csv"}
 MEMBER_NAMES = DATA_NAMES | {"manifest.json"}
 MAX_MEMBER_BYTES = 8 * 1024 * 1024
@@ -97,6 +97,7 @@ def _initial() -> dict:
             "internal_hash_verification": "NOT_RUN", "exported_grid": "NOT_RUN",
             "arithmetic": "NOT_RUN", "report_statistics": "NOT_RUN",
             "profile_isolation": "NOT_RUN", "structural_semantics": "HOLD",
+            "placement_policy": "NOT_RUN",
         },
         "semantic_reference": {
             "basis": "SUPPLIED_REVIEW_002_DESCRIPTION_NOT_RUNTIME_ATTESTATION",
@@ -160,7 +161,13 @@ def inspect_outputs(source: Path, *, opt_in: bool = False, reference_policy: dic
                 {"profile": p, "scenario": s, **values}
                 for (p, s), values in sorted(statistics["groups"].items())
             ]
-            result["validation_status"] = "OUTPUT_VALIDATION_COMPLETE"
+            if summary["unresolved_final_ties"]:
+                result["stages"]["placement_policy"] = "HOLD_FINAL_TIE_REFERENCE"
+                result["validation_status"] = "HOLD_FINAL_TIE_REFERENCE"
+                result["reason_codes"].append("ORIGINAL_FINAL_TIE_RULE_NOT_SUPPLIED")
+            else:
+                result["stages"]["placement_policy"] = "PASS"
+                result["validation_status"] = "OUTPUT_VALIDATION_COMPLETE"
     except ArtifactError as error:
         result["validation_status"] = "HOLD_ARTIFACT_VALIDATION"
         result["reason_codes"].append(str(error))

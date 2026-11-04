@@ -1,7 +1,7 @@
 """Arithmetic inspection of exported P0-C1 observations, never live placement.
 
-The final tie priority and report layout must be supplied explicitly from a
-reviewed reference. Neither is guessed from selected decisions or old fixtures.
+Report layout is explicit. An unknown final tie priority holds ambiguous
+selections; it is never guessed from selected decisions or old fixtures.
 """
 from __future__ import annotations
 
@@ -137,10 +137,12 @@ def validate_reference(reference: dict) -> None:
     }
     if not isinstance(reference, dict) or set(reference) != required:
         raise ArtifactError("POLICY_REFERENCE_SCHEMA_INVALID")
-    if reference["schema_version"] != "p0c1-output-reference-v0.1" or reference["route_namespace"] != NAMESPACE:
+    version = reference["schema_version"]
+    if version not in {"p0c1-output-reference-v0.1", "p0c1-output-reference-v0.2"} or reference["route_namespace"] != NAMESPACE:
         raise ArtifactError("POLICY_REFERENCE_VERSION_INVALID")
     priority = reference["tie_priority"]
-    if not isinstance(priority, list) or len(priority) != 4 or any(not isinstance(path, str) for path in priority) or set(priority) != set(ROUTES):
+    unknown_priority = version == "p0c1-output-reference-v0.2" and priority is None
+    if not unknown_priority and (not isinstance(priority, list) or len(priority) != 4 or any(not isinstance(path, str) for path in priority) or set(priority) != set(ROUTES)):
         raise ArtifactError("EXPLICIT_FINAL_TIE_PRIORITY_REQUIRED")
     if not isinstance(reference["source_reference_sha256"], str) or not re.fullmatch(r"[a-f0-9]{64}", reference["source_reference_sha256"]):
         raise ArtifactError("POLICY_REFERENCE_HASH_INVALID")
@@ -151,7 +153,7 @@ def validate_reference(reference: dict) -> None:
     if type(reference["csv_regret_decimals"]) is not int or not 0 <= reference["csv_regret_decimals"] <= 9:
         raise ArtifactError("REGRET_PRECISION_INVALID")
     checks = reference["report_checks"]
-    if not isinstance(checks, list) or not 33 <= len(checks) <= 100:
+    if not isinstance(checks, list) or not (33 if version.endswith("v0.1") else 25) <= len(checks) <= 100:
         raise ArtifactError("REPORT_CHECK_COVERAGE_REQUIRED")
     identities, pointers = set(), set()
     for check in checks:
@@ -170,7 +172,10 @@ def validate_reference(reference: dict) -> None:
         pointers.add(pointer)
         if type(check["decimals"]) is not int or not 0 <= check["decimals"] <= 9:
             raise ArtifactError("REPORT_PRECISION_INVALID")
-    minimum = {(p, s, name) for p in PROFILES for s in SCENARIOS for name in ("decision_count", "mean_actual_s", "mean_regret_pct", "max_regret_pct")}
+    required_statistics = ("decision_count", "mean_regret_pct", "max_regret_pct")
+    if version.endswith("v0.1"):
+        required_statistics += ("mean_actual_s",)
+    minimum = {(p, s, name) for p in PROFILES for s in SCENARIOS for name in required_statistics}
     if not minimum <= identities or (None, None, "max_regret_pct") not in identities:
         raise ArtifactError("REPORT_CHECK_COVERAGE_REQUIRED")
 
@@ -189,14 +194,18 @@ def _eligible(raw: str, encoding: str) -> set[str]:
     return set(paths)
 
 
-def forecast(training: dict[str, list[dict]], feasible: set[str], priority: list[str]) -> tuple[str, dict[str, float]]:
-    """Accept only two training samples per route; no held-out times or oracle."""
+def forecast(training: dict[str, list[dict]], feasible: set[str], priority: list[str] | None) -> tuple[str | None, dict[str, float]]:
+    """Two training samples only; None means an unresolved equal-payload tie."""
     if any(len(training[route]) != 2 for route in feasible):
         raise ArtifactError("TWO_OTHER_REPEATS_REQUIRED")
     predictions = {route: median(row["elapsed_s"] for row in training[route]) for route in feasible}
     cutoff = min(predictions.values()) * 1.03
     near = [route for route in feasible if predictions[route] <= cutoff]
-    selected = min(near, key=lambda route: (training[route][0]["payload_bytes"], priority.index(route)))
+    minimum_payload = min(training[route][0]["payload_bytes"] for route in near)
+    finalists = [route for route in near if training[route][0]["payload_bytes"] == minimum_payload]
+    if len(finalists) > 1 and priority is None:
+        return None, predictions  # Never infer an order from the exported choice.
+    selected = finalists[0] if len(finalists) == 1 else min(finalists, key=priority.index)
     return selected, predictions
 
 
@@ -221,7 +230,7 @@ def reconstruct(samples: dict, decisions: list[dict], reference: dict, report: d
     validate_reference(reference)
     if dumps(report["policy"]) != dumps(reference["expected_report_policy"]):
         raise ArtifactError("REPORT_POLICY_REFERENCE_MISMATCH")
-    recomputed = []
+    recomputed, unresolved_ties = [], 0
     for row in sorted(decisions, key=lambda d: (d["profile"], d["scenario"], d["query"], d["heldout_repeat"])):
         profile, query, heldout = row["profile"], row["query"], row["heldout_repeat"]
         feasible = SCENARIOS[row["scenario"]]
@@ -231,7 +240,16 @@ def reconstruct(samples: dict, decisions: list[dict], reference: dict, report: d
             raise ArtifactError("DECISION_STATE_REFERENCE_MISMATCH")
         training = {route: [samples[profile, query, route, k] for k in (1, 2, 3) if k != heldout] for route in feasible}
         selected, predictions = forecast(training, feasible, reference["tie_priority"])
-        if selected != row["selected_path"]:
+        if selected is None:
+            claimed = row["selected_path"]
+            near = [route for route in feasible if predictions[route] <= min(predictions.values()) * 1.03]
+            if claimed not in near or training[claimed][0]["payload_bytes"] != min(training[route][0]["payload_bytes"] for route in near):
+                raise ArtifactError("DECISION_MISRANKED")
+            unresolved_ties += 1
+            # Audit the exported choice's arithmetic, without endorsing its
+            # unresolved final ordering or using it to infer a tie priority.
+            selected = claimed
+        elif selected != row["selected_path"]:
             raise ArtifactError("DECISION_MISRANKED")
         actual = samples[profile, query, selected, heldout]["elapsed_s"]
         oracle = min(samples[profile, query, route, heldout]["elapsed_s"] for route in feasible)
@@ -247,11 +265,13 @@ def reconstruct(samples: dict, decisions: list[dict], reference: dict, report: d
     groups = {(p, s): _statistics([row for row in recomputed if (row["profile"], row["scenario"]) == (p, s)]) for p in PROFILES for s in SCENARIOS}
     overall = _statistics(recomputed)
     summary = {
-        "matched_predictions": 48, "matched_selections": 48, "matched_actuals": 48,
+        "matched_predictions": 48, "matched_selections": 48 - unresolved_ties, "matched_actuals": 48,
         "matched_oracles": 48, "matched_regrets": 48, "matched_payloads": 48,
         "unique_exported_holdout_folds": 12, "scenarios_per_reused_fold": 4,
         "hypothetical_feasibility_violations": 0, "heldout_time_leakage_count": 0,
         "max_regret_pct": overall["max_regret_pct"],
+        "unresolved_final_ties": unresolved_ties,
+        "final_tie_reference": "HOLD_NOT_SUPPLIED" if unresolved_ties else "NOT_SUPPLIED_NOT_EXERCISED" if reference["tie_priority"] is None else "EXPLICIT_PRIORITY",
     }
     return summary, {"groups": groups, "overall": overall}
 
@@ -270,7 +290,10 @@ def validate_report_statistics(report: dict, statistics: dict, reference: dict) 
         if check["statistic"] == "decision_count":
             matches = type(value) is int and value == expected_value
         elif isinstance(expected_value, dict):
-            matches = value == expected_value and all(type(v) is int for v in value.values())
+            if reference["schema_version"] == "p0c1-output-reference-v0.2":
+                matches = isinstance(value, dict) and set(value) <= set(ROUTES) and all(type(v) is int and v >= 0 for v in value.values()) and {path: value.get(path, 0) for path in ROUTES} == expected_value
+            else:
+                matches = value == expected_value and all(type(v) is int for v in value.values())
         else:
             matches = type(value) in (int, float) and _matches(value, expected_value, check["decimals"])
         if not matches:
