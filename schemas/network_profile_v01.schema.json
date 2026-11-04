@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P0C directional, time bounded network profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profile_id", "source_id", "destination_id", "recorded_at", "observation_window", "observed_mbps", "conservative_mbps", "method", "n", "uncertainty_status", "variability_mbps", "route_context", "source_sha256", "ttl_seconds", "anomaly_flags"],
+  "properties": {
+    "schema_version": {"const": "p0c.0.1"},
+    "profile_id": {"type": "string", "minLength": 1},
+    "source_id": {"type": "string", "minLength": 1},
+    "destination_id": {"type": "string", "minLength": 1},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "observation_window": {
+      "type": "object", "additionalProperties": false, "required": ["start", "end"],
+      "properties": {
+        "start": {"type": "string", "format": "date-time"},
+        "end": {"type": "string", "format": "date-time"}
+      }
+    },
+    "observed_mbps": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "conservative_mbps": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "method": {"type": "string", "minLength": 1},
+    "n": {"type": "integer", "minimum": 1},
+    "uncertainty_status": {"enum": ["MEASURED", "NOT_MEASURED"]},
+    "variability_mbps": {"type": ["number", "null"], "minimum": 0},
+    "route_context": {
+      "type": "object", "additionalProperties": false, "required": ["topology_id", "access_context"],
+      "properties": {
+        "topology_id": {"type": ["string", "null"], "minLength": 1},
+        "access_context": {"type": "string", "minLength": 1}
+      }
+    },
+    "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "ttl_seconds": {"type": "integer", "minimum": 1},
+    "anomaly_flags": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"uncertainty_status": {"const": "NOT_MEASURED"}}},
+      "then": {"properties": {"variability_mbps": {"type": "null"}}},
+      "else": {"properties": {"variability_mbps": {"type": "number", "minimum": 0}}}
+    }
+  ]
+}
