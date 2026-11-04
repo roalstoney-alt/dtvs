@@ -1,0 +1,7 @@
+{
+  "input_mode": "SYNTHETIC_FIXTURE",
+  "files_sha256": {
+    "dataset.json": "baf8ce185f0a6b27686f2766cd50467eac0c886f733cb8b380f735382d3e14cd",
+    "fixture.txt": "079b0a5c3c39cea089f662283c838069ed029ea8c1f259537082e9e49c58c1c5"
+  }
+}

@@ -1,0 +1,381 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P0C offline placement decision; no production dispatch",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_version",
+    "environment_profile_id",
+    "task_id",
+    "repeat_id",
+    "evaluated_at",
+    "status",
+    "reason_codes",
+    "candidate_gates",
+    "feasible_set",
+    "predictions_seconds",
+    "heldout_seconds",
+    "selected_route",
+    "predicted_seconds",
+    "heldout_actual_seconds",
+    "oracle_seconds",
+    "relative_regret",
+    "baselines",
+    "training_events",
+    "heldout_events",
+    "dataset_sha256",
+    "fixture_sha256",
+    "profile_hashes",
+    "latency_model",
+    "stage_terms",
+    "currency",
+    "energy",
+    "confidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "p0c.0.1"
+    },
+    "policy_version": {
+      "const": "p0c-network-aware-v0.1"
+    },
+    "environment_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repeat_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "enum": [
+        "SELECTED_OFFLINE",
+        "HOLD_INTEGRITY",
+        "HOLD_QUALITY_GATE",
+        "HOLD_ELIGIBILITY_UNKNOWN",
+        "HOLD_NOT_CALIBRATED",
+        "HOLD_NO_FEASIBLE_ROUTE"
+      ]
+    },
+    "reason_codes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "candidate_gates": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/gate"
+      }
+    },
+    "feasible_set": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "predictions_seconds": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      }
+    },
+    "heldout_seconds": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      }
+    },
+    "selected_route": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "predicted_seconds": {
+      "$ref": "#/$defs/seconds_or_null"
+    },
+    "heldout_actual_seconds": {
+      "$ref": "#/$defs/seconds_or_null"
+    },
+    "oracle_seconds": {
+      "$ref": "#/$defs/seconds_or_null"
+    },
+    "relative_regret": {
+      "$ref": "#/$defs/regret_or_null"
+    },
+    "baselines": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "always_local",
+        "always_direct",
+        "always_range"
+      ],
+      "properties": {
+        "always_local": {
+          "$ref": "#/$defs/baseline"
+        },
+        "always_direct": {
+          "$ref": "#/$defs/baseline"
+        },
+        "always_range": {
+          "$ref": "#/$defs/baseline"
+        }
+      }
+    },
+    "training_events": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/hash"
+      }
+    },
+    "heldout_events": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/hash"
+      }
+    },
+    "dataset_sha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "fixture_sha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "profile_hashes": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/hash"
+      }
+    },
+    "latency_model": {
+      "const": "EMPIRICAL_END_TO_END_MEAN"
+    },
+    "stage_terms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stage",
+        "network",
+        "compute",
+        "verify",
+        "merge",
+        "retry"
+      ],
+      "properties": {
+        "stage": {
+          "const": "UNKNOWN"
+        },
+        "network": {
+          "const": "UNKNOWN"
+        },
+        "compute": {
+          "const": "UNKNOWN"
+        },
+        "verify": {
+          "const": "UNKNOWN"
+        },
+        "merge": {
+          "const": "UNKNOWN"
+        },
+        "retry": {
+          "const": "UNKNOWN"
+        }
+      }
+    },
+    "currency": {
+      "$ref": "#/$defs/unmeasured"
+    },
+    "energy": {
+      "$ref": "#/$defs/unmeasured"
+    },
+    "confidence": {
+      "$ref": "#/$defs/unmeasured"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "SELECTED_OFFLINE"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "selected_route": {
+            "type": "string",
+            "minLength": 1
+          },
+          "predicted_seconds": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "heldout_actual_seconds": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "oracle_seconds": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "relative_regret": {
+            "type": "number",
+            "minimum": 0
+          },
+          "feasible_set": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "selected_route": {
+            "type": "null"
+          },
+          "predicted_seconds": {
+            "type": "null"
+          },
+          "heldout_actual_seconds": {
+            "type": "null"
+          },
+          "oracle_seconds": {
+            "type": "null"
+          },
+          "relative_regret": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "route_id",
+        "status",
+        "actual_seconds",
+        "relative_regret"
+      ],
+      "properties": {
+        "route_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "EVALUATED",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "actual_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "relative_regret": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason_codes"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "ELIGIBLE",
+            "INELIGIBLE",
+            "HOLD_ELIGIBILITY_UNKNOWN",
+            "HOLD_NOT_CALIBRATED"
+          ]
+        },
+        "reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "unmeasured": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value"
+      ],
+      "properties": {
+        "status": {
+          "const": "NOT_MEASURED"
+        },
+        "value": {
+          "type": "null"
+        }
+      }
+    },
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "seconds_or_null": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "exclusiveMinimum": 0
+    },
+    "regret_or_null": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    }
+  }
+}

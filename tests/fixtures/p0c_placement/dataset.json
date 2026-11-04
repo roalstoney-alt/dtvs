@@ -1,0 +1,789 @@
+{
+  "input_mode": "SYNTHETIC_FIXTURE",
+  "profiles": [
+    {
+      "schema_version": "p0c.0.1",
+      "profile_id": "synthetic-old-out",
+      "source_id": "SOURCE",
+      "destination_id": "WORKER",
+      "recorded_at": "2026-11-04T12:00:00Z",
+      "observation_window": {
+        "start": "2026-11-04T11:55:00Z",
+        "end": "2026-11-04T12:00:00Z"
+      },
+      "observed_mbps": 20,
+      "conservative_mbps": 16.0,
+      "method": "SYNTHETIC_FIXTURE_NOT_A_MEASUREMENT",
+      "n": 3,
+      "uncertainty_status": "NOT_MEASURED",
+      "variability_mbps": null,
+      "route_context": {
+        "topology_id": "synthetic-old-isolated-topology",
+        "access_context": "SYNTHETIC_OFFLINE_ONLY"
+      },
+      "source_sha256": "b4d9e8d305a218ea1f8aabc1472459c09413b2d25b921571c1e08c6de44ea4f9",
+      "ttl_seconds": 3600,
+      "anomaly_flags": []
+    },
+    {
+      "schema_version": "p0c.0.1",
+      "profile_id": "synthetic-old-return",
+      "source_id": "WORKER",
+      "destination_id": "SOURCE",
+      "recorded_at": "2026-11-04T12:00:00Z",
+      "observation_window": {
+        "start": "2026-11-04T11:55:00Z",
+        "end": "2026-11-04T12:00:00Z"
+      },
+      "observed_mbps": 8,
+      "conservative_mbps": 6.4,
+      "method": "SYNTHETIC_FIXTURE_NOT_A_MEASUREMENT",
+      "n": 3,
+      "uncertainty_status": "NOT_MEASURED",
+      "variability_mbps": null,
+      "route_context": {
+        "topology_id": "synthetic-old-isolated-topology",
+        "access_context": "SYNTHETIC_OFFLINE_ONLY"
+      },
+      "source_sha256": "b0cdf2e83b6da5f5e6cd93f8cc81cd99351f653eb3c0e294ef7b1a43913b2dfd",
+      "ttl_seconds": 3600,
+      "anomaly_flags": []
+    },
+    {
+      "schema_version": "p0c.0.1",
+      "profile_id": "synthetic-new-out",
+      "source_id": "SOURCE",
+      "destination_id": "WORKER",
+      "recorded_at": "2026-11-04T12:00:00Z",
+      "observation_window": {
+        "start": "2026-11-04T11:55:00Z",
+        "end": "2026-11-04T12:00:00Z"
+      },
+      "observed_mbps": 12,
+      "conservative_mbps": 9.600000000000001,
+      "method": "SYNTHETIC_FIXTURE_NOT_A_MEASUREMENT",
+      "n": 3,
+      "uncertainty_status": "NOT_MEASURED",
+      "variability_mbps": null,
+      "route_context": {
+        "topology_id": "synthetic-new-isolated-topology",
+        "access_context": "SYNTHETIC_OFFLINE_ONLY"
+      },
+      "source_sha256": "7da93308f86200e8cef2bb5e3825e0a24f2649e17446bb53eca0bc9436b67cc9",
+      "ttl_seconds": 3600,
+      "anomaly_flags": []
+    },
+    {
+      "schema_version": "p0c.0.1",
+      "profile_id": "synthetic-new-return",
+      "source_id": "WORKER",
+      "destination_id": "SOURCE",
+      "recorded_at": "2026-11-04T12:00:00Z",
+      "observation_window": {
+        "start": "2026-11-04T11:55:00Z",
+        "end": "2026-11-04T12:00:00Z"
+      },
+      "observed_mbps": 6,
+      "conservative_mbps": 4.800000000000001,
+      "method": "SYNTHETIC_FIXTURE_NOT_A_MEASUREMENT",
+      "n": 3,
+      "uncertainty_status": "NOT_MEASURED",
+      "variability_mbps": null,
+      "route_context": {
+        "topology_id": "synthetic-new-isolated-topology",
+        "access_context": "SYNTHETIC_OFFLINE_ONLY"
+      },
+      "source_sha256": "7b775840bd642b23a3e6e186911ee8fee3281e2dd24d680e2662d23bdc059798",
+      "ttl_seconds": 3600,
+      "anomaly_flags": []
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "DTVS-P001-T0001",
+      "environment_profile_id": "synthetic-old",
+      "bundle": {
+        "schema_version": "0.2.2",
+        "task_id": "DTVS-P001-T0001",
+        "bundle_version": 1,
+        "asset_id": "sha256:079b0a5c3c39cea089f662283c838069ed029ea8c1f259537082e9e49c58c1c5",
+        "core": {
+          "start_frame": 0,
+          "end_frame_exclusive": 24
+        },
+        "context": {
+          "start_frame": 0,
+          "end_frame_exclusive": 24
+        },
+        "input": {
+          "path_or_object_key": "fixture.txt",
+          "sha256": "079b0a5c3c39cea089f662283c838069ed029ea8c1f259537082e9e49c58c1c5"
+        },
+        "execution": {
+          "worker_pack_version": "0.1.0",
+          "pipeline_id": "synthetic_offline",
+          "model_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "parameters_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "random_seed": 0
+        },
+        "output": {
+          "width": 16,
+          "height": 16,
+          "fps_num": 24,
+          "fps_den": 1,
+          "expected_core_frames": 24
+        },
+        "lease": {
+          "expires_at": "2026-11-04T13:00:00Z",
+          "checkpoint_frames": 24
+        },
+        "verification": {
+          "upload_threshold": 90,
+          "minimum_component_score": 70
+        },
+        "signature": {
+          "key_id": "SYNTHETIC_FIXTURE_PUBLIC_KEY_ONLY",
+          "algorithm": "Ed25519",
+          "value": "mhaSVQufL49Wk9dweYM10KGpCbVmfsez1zJOvwIZ6aVaqITtOHoPeATqwJ9pvcRi65pe2j0iyoQXnfA6CxaSDA=="
+        }
+      },
+      "authorization": {
+        "task_id": "DTVS-P001-T0001",
+        "environment_profile_id": "synthetic-old",
+        "bundle_sha256": "62df2ec59c4bd48829d36f99e8ac7b17ad13a2aaee7e3ebfcc7d052f89f21a70",
+        "fixture_sha256": "079b0a5c3c39cea089f662283c838069ed029ea8c1f259537082e9e49c58c1c5",
+        "bundle_state": "CREATED",
+        "verifier_required": true,
+        "accepted_only_merge": true,
+        "quality_gate_required": true,
+        "candidates": [
+          {
+            "route_id": "A_LOCAL",
+            "mode": "LOCAL",
+            "source_id": "SOURCE",
+            "destination_id": "SOURCE",
+            "topology_id": "synthetic-old-isolated-topology",
+            "permissions": {
+              "task_input_authorized": true,
+              "asset_authorized": true,
+              "source_access_allowed": true,
+              "compute_capable": true,
+              "privacy_allowed": true,
+              "legal_allowed": true,
+              "source_execution_allowed": true,
+              "remote_execution_allowed": true,
+              "range_supported": true
+            },
+            "access_fraction": 1,
+            "network_hops": []
+          },
+          {
+            "route_id": "B_DIRECT",
+            "mode": "DIRECT",
+            "source_id": "SOURCE",
+            "destination_id": "WORKER",
+            "topology_id": "synthetic-old-isolated-topology",
+            "permissions": {
+              "task_input_authorized": true,
+              "asset_authorized": true,
+              "source_access_allowed": true,
+              "compute_capable": true,
+              "privacy_allowed": true,
+              "legal_allowed": true,
+              "source_execution_allowed": true,
+              "remote_execution_allowed": true,
+              "range_supported": true
+            },
+            "access_fraction": 1,
+            "network_hops": [
+              {
+                "source_id": "SOURCE",
+                "destination_id": "WORKER",
+                "profile_id": "synthetic-old-out"
+              },
+              {
+                "source_id": "WORKER",
+                "destination_id": "SOURCE",
+                "profile_id": "synthetic-old-return"
+              }
+            ]
+          },
+          {
+            "route_id": "C_RANGE",
+            "mode": "RANGE",
+            "source_id": "SOURCE",
+            "destination_id": "WORKER",
+            "topology_id": "synthetic-old-isolated-topology",
+            "permissions": {
+              "task_input_authorized": true,
+              "asset_authorized": true,
+              "source_access_allowed": true,
+              "compute_capable": true,
+              "privacy_allowed": true,
+              "legal_allowed": true,
+              "source_execution_allowed": true,
+              "remote_execution_allowed": true,
+              "range_supported": true
+            },
+            "access_fraction": 0.25,
+            "network_hops": [
+              {
+                "source_id": "SOURCE",
+                "destination_id": "WORKER",
+                "profile_id": "synthetic-old-out"
+              },
+              {
+                "source_id": "WORKER",
+                "destination_id": "SOURCE",
+                "profile_id": "synthetic-old-return"
+              }
+            ]
+          },
+          {
+            "route_id": "D_REMOTE",
+            "mode": "REMOTE",
+            "source_id": "SOURCE",
+            "destination_id": "WORKER",
+            "topology_id": "synthetic-old-isolated-topology",
+            "permissions": {
+              "task_input_authorized": true,
+              "asset_authorized": true,
+              "source_access_allowed": true,
+              "compute_capable": true,
+              "privacy_allowed": true,
+              "legal_allowed": false,
+              "source_execution_allowed": true,
+              "remote_execution_allowed": true,
+              "range_supported": true
+            },
+            "access_fraction": 1,
+            "network_hops": [
+              {
+                "source_id": "SOURCE",
+                "destination_id": "WORKER",
+                "profile_id": "synthetic-old-out"
+              },
+              {
+                "source_id": "WORKER",
+                "destination_id": "SOURCE",
+                "profile_id": "synthetic-old-return"
+              }
+            ]
+          }
+        ],
+        "signature": {
+          "key_id": "SYNTHETIC_FIXTURE_PUBLIC_KEY_ONLY",
+          "algorithm": "Ed25519",
+          "value": "8K1/OsB9bIr1m3b0k/4CD0HCiW4jsLyFhcBBXndVgoLD7DyIr9O7MQhAaTw90UH7eUAIQ62Qu+89Gc3eKXpYDA=="
+        }
+      }
+    },
+    {
+      "task_id": "DTVS-P001-T0002",
+      "environment_profile_id": "synthetic-new",
+      "bundle": {
+        "schema_version": "0.2.2",
+        "task_id": "DTVS-P001-T0002",
+        "bundle_version": 1,
+        "asset_id": "sha256:079b0a5c3c39cea089f662283c838069ed029ea8c1f259537082e9e49c58c1c5",
+        "core": {
+          "start_frame": 0,
+          "end_frame_exclusive": 24
+        },
+        "context": {
+          "start_frame": 0,
+          "end_frame_exclusive": 24
+        },
+        "input": {
+          "path_or_object_key": "fixture.txt",
+          "sha256": "079b0a5c3c39cea089f662283c838069ed029ea8c1f259537082e9e49c58c1c5"
+        },
+        "execution": {
+          "worker_pack_version": "0.1.0",
+          "pipeline_id": "synthetic_offline",
+          "model_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "parameters_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "random_seed": 0
+        },
+        "output": {
+          "width": 16,
+          "height": 16,
+          "fps_num": 24,
+          "fps_den": 1,
+          "expected_core_frames": 24
+        },
+        "lease": {
+          "expires_at": "2026-11-04T13:00:00Z",
+          "checkpoint_frames": 24
+        },
+        "verification": {
+          "upload_threshold": 90,
+          "minimum_component_score": 70
+        },
+        "signature": {
+          "key_id": "SYNTHETIC_FIXTURE_PUBLIC_KEY_ONLY",
+          "algorithm": "Ed25519",
+          "value": "flD5dp77RO9ivCUMLWfYI+HxnHzgGi5fcV8ViZROx6J2B/p0ou9hVVHwn7U0jVPSTika62iBJ3gPrMzpYQGoDg=="
+        }
+      },
+      "authorization": {
+        "task_id": "DTVS-P001-T0002",
+        "environment_profile_id": "synthetic-new",
+        "bundle_sha256": "1cc2bdc78690fcfab8b1b234057b36d6984b9b4ca3ab1059558e8871ce51953b",
+        "fixture_sha256": "079b0a5c3c39cea089f662283c838069ed029ea8c1f259537082e9e49c58c1c5",
+        "bundle_state": "CREATED",
+        "verifier_required": true,
+        "accepted_only_merge": true,
+        "quality_gate_required": true,
+        "candidates": [
+          {
+            "route_id": "A_LOCAL",
+            "mode": "LOCAL",
+            "source_id": "SOURCE",
+            "destination_id": "SOURCE",
+            "topology_id": "synthetic-new-isolated-topology",
+            "permissions": {
+              "task_input_authorized": true,
+              "asset_authorized": true,
+              "source_access_allowed": true,
+              "compute_capable": true,
+              "privacy_allowed": true,
+              "legal_allowed": true,
+              "source_execution_allowed": true,
+              "remote_execution_allowed": true,
+              "range_supported": true
+            },
+            "access_fraction": 1,
+            "network_hops": []
+          },
+          {
+            "route_id": "B_DIRECT",
+            "mode": "DIRECT",
+            "source_id": "SOURCE",
+            "destination_id": "WORKER",
+            "topology_id": "synthetic-new-isolated-topology",
+            "permissions": {
+              "task_input_authorized": true,
+              "asset_authorized": true,
+              "source_access_allowed": true,
+              "compute_capable": true,
+              "privacy_allowed": true,
+              "legal_allowed": true,
+              "source_execution_allowed": true,
+              "remote_execution_allowed": true,
+              "range_supported": true
+            },
+            "access_fraction": 1,
+            "network_hops": [
+              {
+                "source_id": "SOURCE",
+                "destination_id": "WORKER",
+                "profile_id": "synthetic-new-out"
+              },
+              {
+                "source_id": "WORKER",
+                "destination_id": "SOURCE",
+                "profile_id": "synthetic-new-return"
+              }
+            ]
+          },
+          {
+            "route_id": "C_RANGE",
+            "mode": "RANGE",
+            "source_id": "SOURCE",
+            "destination_id": "WORKER",
+            "topology_id": "synthetic-new-isolated-topology",
+            "permissions": {
+              "task_input_authorized": true,
+              "asset_authorized": true,
+              "source_access_allowed": true,
+              "compute_capable": true,
+              "privacy_allowed": true,
+              "legal_allowed": true,
+              "source_execution_allowed": true,
+              "remote_execution_allowed": true,
+              "range_supported": true
+            },
+            "access_fraction": 0.25,
+            "network_hops": [
+              {
+                "source_id": "SOURCE",
+                "destination_id": "WORKER",
+                "profile_id": "synthetic-new-out"
+              },
+              {
+                "source_id": "WORKER",
+                "destination_id": "SOURCE",
+                "profile_id": "synthetic-new-return"
+              }
+            ]
+          },
+          {
+            "route_id": "D_REMOTE",
+            "mode": "REMOTE",
+            "source_id": "SOURCE",
+            "destination_id": "WORKER",
+            "topology_id": "synthetic-new-isolated-topology",
+            "permissions": {
+              "task_input_authorized": true,
+              "asset_authorized": true,
+              "source_access_allowed": true,
+              "compute_capable": true,
+              "privacy_allowed": true,
+              "legal_allowed": false,
+              "source_execution_allowed": true,
+              "remote_execution_allowed": true,
+              "range_supported": true
+            },
+            "access_fraction": 1,
+            "network_hops": [
+              {
+                "source_id": "SOURCE",
+                "destination_id": "WORKER",
+                "profile_id": "synthetic-new-out"
+              },
+              {
+                "source_id": "WORKER",
+                "destination_id": "SOURCE",
+                "profile_id": "synthetic-new-return"
+              }
+            ]
+          }
+        ],
+        "signature": {
+          "key_id": "SYNTHETIC_FIXTURE_PUBLIC_KEY_ONLY",
+          "algorithm": "Ed25519",
+          "value": "Vp1SDYzUSTMPo73HYk/acKROLE4nEv/TY9K8GC6QBjyXum5oB3RMYs5Hjbl0WQCWZz/E6oCoBZ2V6CLk/olVCQ=="
+        }
+      }
+    }
+  ],
+  "events": [
+    {
+      "event_id": "synthetic-old-repeat1-A_LOCAL",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-1",
+      "route_id": "A_LOCAL",
+      "elapsed_seconds": 14,
+      "prev_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sha256": "7bf147af379e8eb958a3be780dab5562873eb61d367bc7db782aaa05da130151"
+    },
+    {
+      "event_id": "synthetic-old-repeat1-B_DIRECT",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-1",
+      "route_id": "B_DIRECT",
+      "elapsed_seconds": 9,
+      "prev_sha256": "7bf147af379e8eb958a3be780dab5562873eb61d367bc7db782aaa05da130151",
+      "sha256": "ed5248ca8133171251d6903bf8eb2671726c0dd351750ed1b31f70b7aa64dc45"
+    },
+    {
+      "event_id": "synthetic-old-repeat1-C_RANGE",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-1",
+      "route_id": "C_RANGE",
+      "elapsed_seconds": 10,
+      "prev_sha256": "ed5248ca8133171251d6903bf8eb2671726c0dd351750ed1b31f70b7aa64dc45",
+      "sha256": "3e28a9cdab781554be4e8679170cda6fc915a2d95ed40f7e00416b9101933544"
+    },
+    {
+      "event_id": "synthetic-old-repeat1-D_REMOTE",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-1",
+      "route_id": "D_REMOTE",
+      "elapsed_seconds": 1,
+      "prev_sha256": "3e28a9cdab781554be4e8679170cda6fc915a2d95ed40f7e00416b9101933544",
+      "sha256": "c15687c6f6be0c7bb55f2b3b467da93573f810109c7c777fbe69ff3707378e70"
+    },
+    {
+      "event_id": "synthetic-old-repeat2-A_LOCAL",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-2",
+      "route_id": "A_LOCAL",
+      "elapsed_seconds": 14,
+      "prev_sha256": "c15687c6f6be0c7bb55f2b3b467da93573f810109c7c777fbe69ff3707378e70",
+      "sha256": "713fb87c03732c0de68cae2effe82690a884b85e504ce0fb70c002bcc47f2cf9"
+    },
+    {
+      "event_id": "synthetic-old-repeat2-B_DIRECT",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-2",
+      "route_id": "B_DIRECT",
+      "elapsed_seconds": 11,
+      "prev_sha256": "713fb87c03732c0de68cae2effe82690a884b85e504ce0fb70c002bcc47f2cf9",
+      "sha256": "e359d0e550520cdf24285a4a1cb6959371e11d2266da9542cb9d3f11e3544676"
+    },
+    {
+      "event_id": "synthetic-old-repeat2-C_RANGE",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-2",
+      "route_id": "C_RANGE",
+      "elapsed_seconds": 9,
+      "prev_sha256": "e359d0e550520cdf24285a4a1cb6959371e11d2266da9542cb9d3f11e3544676",
+      "sha256": "051a0d8d8e5b7bea0c34b46b6f22fab906a7b3af0d72b1157e44b086d6a8b763"
+    },
+    {
+      "event_id": "synthetic-old-repeat2-D_REMOTE",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-2",
+      "route_id": "D_REMOTE",
+      "elapsed_seconds": 1,
+      "prev_sha256": "051a0d8d8e5b7bea0c34b46b6f22fab906a7b3af0d72b1157e44b086d6a8b763",
+      "sha256": "6dfee06638a901793474c9d345750f39ed60a1149a3ef1f3a2767611b58cdc04"
+    },
+    {
+      "event_id": "synthetic-old-repeat3-A_LOCAL",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-3",
+      "route_id": "A_LOCAL",
+      "elapsed_seconds": 14,
+      "prev_sha256": "6dfee06638a901793474c9d345750f39ed60a1149a3ef1f3a2767611b58cdc04",
+      "sha256": "d9052a9649480dc507d40569287c53faedb33282e561bf2311c93d20d1b1bdf6"
+    },
+    {
+      "event_id": "synthetic-old-repeat3-B_DIRECT",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-3",
+      "route_id": "B_DIRECT",
+      "elapsed_seconds": 10,
+      "prev_sha256": "d9052a9649480dc507d40569287c53faedb33282e561bf2311c93d20d1b1bdf6",
+      "sha256": "20c38f6827146e844dd5f6d6201dee61159c4b91ffc30557860ba1c64b5a8f37"
+    },
+    {
+      "event_id": "synthetic-old-repeat3-C_RANGE",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-3",
+      "route_id": "C_RANGE",
+      "elapsed_seconds": 12,
+      "prev_sha256": "20c38f6827146e844dd5f6d6201dee61159c4b91ffc30557860ba1c64b5a8f37",
+      "sha256": "4ec7073e4f1bfa36b28a8842997788a9328857f9159a79d3f833c9d382d9f563"
+    },
+    {
+      "event_id": "synthetic-old-repeat3-D_REMOTE",
+      "environment_profile_id": "synthetic-old",
+      "task_id": "DTVS-P001-T0001",
+      "repeat_id": "repeat-3",
+      "route_id": "D_REMOTE",
+      "elapsed_seconds": 1,
+      "prev_sha256": "4ec7073e4f1bfa36b28a8842997788a9328857f9159a79d3f833c9d382d9f563",
+      "sha256": "cf782f83c476bb87102a7c032042fc7e0c48c473ba01284f290709b716e2f2cf"
+    },
+    {
+      "event_id": "synthetic-new-repeat1-A_LOCAL",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-1",
+      "route_id": "A_LOCAL",
+      "elapsed_seconds": 14,
+      "prev_sha256": "cf782f83c476bb87102a7c032042fc7e0c48c473ba01284f290709b716e2f2cf",
+      "sha256": "b97a2f78659670740eeb3fe9e9db063fb73ae99dfeaedc01d2cde0f8ba3a6129"
+    },
+    {
+      "event_id": "synthetic-new-repeat1-B_DIRECT",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-1",
+      "route_id": "B_DIRECT",
+      "elapsed_seconds": 19,
+      "prev_sha256": "b97a2f78659670740eeb3fe9e9db063fb73ae99dfeaedc01d2cde0f8ba3a6129",
+      "sha256": "ed47859fe1be9269be374f1832836ca9439eaf7c037ea2d5593cbaa38712b4e0"
+    },
+    {
+      "event_id": "synthetic-new-repeat1-C_RANGE",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-1",
+      "route_id": "C_RANGE",
+      "elapsed_seconds": 12,
+      "prev_sha256": "ed47859fe1be9269be374f1832836ca9439eaf7c037ea2d5593cbaa38712b4e0",
+      "sha256": "64cce524eeee57609c330a387a9d9cba9ce21d4e4c313bebd97fec5486f80f7d"
+    },
+    {
+      "event_id": "synthetic-new-repeat1-D_REMOTE",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-1",
+      "route_id": "D_REMOTE",
+      "elapsed_seconds": 2,
+      "prev_sha256": "64cce524eeee57609c330a387a9d9cba9ce21d4e4c313bebd97fec5486f80f7d",
+      "sha256": "f4f4148709d45bbc578aebce59d9a553ab96635905a53e178a73221311d1d60e"
+    },
+    {
+      "event_id": "synthetic-new-repeat2-A_LOCAL",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-2",
+      "route_id": "A_LOCAL",
+      "elapsed_seconds": 15,
+      "prev_sha256": "f4f4148709d45bbc578aebce59d9a553ab96635905a53e178a73221311d1d60e",
+      "sha256": "bb0d56b3d9629d38184e501ce6cecffae70eba1052ef5f0a5b3048ee1d40199b"
+    },
+    {
+      "event_id": "synthetic-new-repeat2-B_DIRECT",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-2",
+      "route_id": "B_DIRECT",
+      "elapsed_seconds": 20,
+      "prev_sha256": "bb0d56b3d9629d38184e501ce6cecffae70eba1052ef5f0a5b3048ee1d40199b",
+      "sha256": "82678d0a0d6f00055a60944e49632792e2fe2deed0fa4b584b18142ddd674abf"
+    },
+    {
+      "event_id": "synthetic-new-repeat2-C_RANGE",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-2",
+      "route_id": "C_RANGE",
+      "elapsed_seconds": 13,
+      "prev_sha256": "82678d0a0d6f00055a60944e49632792e2fe2deed0fa4b584b18142ddd674abf",
+      "sha256": "bfdd20ecf170cfdf3128ab9990c78eaa1cb1c381ec20496ff9aeed17d7a3210a"
+    },
+    {
+      "event_id": "synthetic-new-repeat2-D_REMOTE",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-2",
+      "route_id": "D_REMOTE",
+      "elapsed_seconds": 2,
+      "prev_sha256": "bfdd20ecf170cfdf3128ab9990c78eaa1cb1c381ec20496ff9aeed17d7a3210a",
+      "sha256": "052d57c17e75267be01a91ab1c609823c54d15abfa1a900c38797eacf7774c2c"
+    },
+    {
+      "event_id": "synthetic-new-repeat3-A_LOCAL",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-3",
+      "route_id": "A_LOCAL",
+      "elapsed_seconds": 16,
+      "prev_sha256": "052d57c17e75267be01a91ab1c609823c54d15abfa1a900c38797eacf7774c2c",
+      "sha256": "34e486a7fc71505b9cf8abee6ae3836dcccd1ef7edda6c581b98befcb62b44a8"
+    },
+    {
+      "event_id": "synthetic-new-repeat3-B_DIRECT",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-3",
+      "route_id": "B_DIRECT",
+      "elapsed_seconds": 21,
+      "prev_sha256": "34e486a7fc71505b9cf8abee6ae3836dcccd1ef7edda6c581b98befcb62b44a8",
+      "sha256": "ef9fe18bf517ac35da683c531479f60dd35bf3e282874ce6db1d62f73fcafcd0"
+    },
+    {
+      "event_id": "synthetic-new-repeat3-C_RANGE",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-3",
+      "route_id": "C_RANGE",
+      "elapsed_seconds": 11,
+      "prev_sha256": "ef9fe18bf517ac35da683c531479f60dd35bf3e282874ce6db1d62f73fcafcd0",
+      "sha256": "46da673d9332963f8bc5f5e42c5742d6ef19835939955b0dd4b5649101105629"
+    },
+    {
+      "event_id": "synthetic-new-repeat3-D_REMOTE",
+      "environment_profile_id": "synthetic-new",
+      "task_id": "DTVS-P001-T0002",
+      "repeat_id": "repeat-3",
+      "route_id": "D_REMOTE",
+      "elapsed_seconds": 2,
+      "prev_sha256": "46da673d9332963f8bc5f5e42c5742d6ef19835939955b0dd4b5649101105629",
+      "sha256": "301e941a8384033d42d67239fed16d933083aa9be404430e953e9379a9685a1d"
+    }
+  ],
+  "profile_sources": {
+    "synthetic-old-out": {
+      "schema_version": "p0c.0.1",
+      "source_id": "SOURCE",
+      "destination_id": "WORKER",
+      "recorded_at": "2026-11-04T12:00:00Z",
+      "observation_window": {
+        "start": "2026-11-04T11:55:00Z",
+        "end": "2026-11-04T12:00:00Z"
+      },
+      "observed_mbps": 20,
+      "conservative_mbps": 16.0,
+      "method": "SYNTHETIC_FIXTURE_NOT_A_MEASUREMENT",
+      "n": 3,
+      "uncertainty_status": "NOT_MEASURED",
+      "variability_mbps": null,
+      "route_context": {
+        "topology_id": "synthetic-old-isolated-topology",
+        "access_context": "SYNTHETIC_OFFLINE_ONLY"
+      },
+      "anomaly_flags": []
+    },
+    "synthetic-old-return": {
+      "schema_version": "p0c.0.1",
+      "source_id": "WORKER",
+      "destination_id": "SOURCE",
+      "recorded_at": "2026-11-04T12:00:00Z",
+      "observation_window": {
+        "start": "2026-11-04T11:55:00Z",
+        "end": "2026-11-04T12:00:00Z"
+      },
+      "observed_mbps": 8,
+      "conservative_mbps": 6.4,
+      "method": "SYNTHETIC_FIXTURE_NOT_A_MEASUREMENT",
+      "n": 3,
+      "uncertainty_status": "NOT_MEASURED",
+      "variability_mbps": null,
+      "route_context": {
+        "topology_id": "synthetic-old-isolated-topology",
+        "access_context": "SYNTHETIC_OFFLINE_ONLY"
+      },
+      "anomaly_flags": []
+    },
+    "synthetic-new-out": {
+      "schema_version": "p0c.0.1",
+      "source_id": "SOURCE",
+      "destination_id": "WORKER",
+      "recorded_at": "2026-11-04T12:00:00Z",
+      "observation_window": {
+        "start": "2026-11-04T11:55:00Z",
+        "end": "2026-11-04T12:00:00Z"
+      },
+      "observed_mbps": 12,
+      "conservative_mbps": 9.600000000000001,
+      "method": "SYNTHETIC_FIXTURE_NOT_A_MEASUREMENT",
+      "n": 3,
+      "uncertainty_status": "NOT_MEASURED",
+      "variability_mbps": null,
+      "route_context": {
+        "topology_id": "synthetic-new-isolated-topology",
+        "access_context": "SYNTHETIC_OFFLINE_ONLY"
+      },
+      "anomaly_flags": []
+    },
+    "synthetic-new-return": {
+      "schema_version": "p0c.0.1",
+      "source_id": "WORKER",
+      "destination_id": "SOURCE",
+      "recorded_at": "2026-11-04T12:00:00Z",
+      "observation_window": {
+        "start": "2026-11-04T11:55:00Z",
+        "end": "2026-11-04T12:00:00Z"
+      },
+      "observed_mbps": 6,
+      "conservative_mbps": 4.800000000000001,
+      "method": "SYNTHETIC_FIXTURE_NOT_A_MEASUREMENT",
+      "n": 3,
+      "uncertainty_status": "NOT_MEASURED",
+      "variability_mbps": null,
+      "route_context": {
+        "topology_id": "synthetic-new-isolated-topology",
+        "access_context": "SYNTHETIC_OFFLINE_ONLY"
+      },
+      "anomaly_flags": []
+    }
+  }
+}
