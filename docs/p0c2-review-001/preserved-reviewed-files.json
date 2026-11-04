@@ -1,0 +1,20 @@
+{
+  "reviewed_head": "2b858ded34697120231b09806bdcde386eec0c71",
+  "files_sha256": {
+    "docs/P0C_NETWORK_AWARE_PLACEMENT_REPORT.md": "aa62779fe93b604b2e043074cbca5270314cb6f5c7e44063068133cd93f5b8d2",
+    "docs/p0c-network-aware-placement/replay/manifest.json": "aa615738324e8126491c0c519fdf04625430869029ed3571bf89180b6d895992",
+    "docs/p0c-network-aware-placement/replay/report.json": "7423eb9d562d3420d8cd25493a7778837ae0f34ae390f1cb2b70f844fba47c0d",
+    "dtvs/scheduling/__init__.py": "cb55df8117f5d21055b1da9629f1dda5a31716106748aae22ad784a25d4341a3",
+    "dtvs/scheduling/network_profile.py": "514de446d43c05a100e510ad14c7dfcacc08ef5f4198ed481138a69ac0878265",
+    "dtvs/scheduling/placement_policy.py": "58673954db0bbe4dd053bd8ff288f2da8fe25ce30fbaa2793b8b0873fed8bf77",
+    "dtvs/scheduling/replay.py": "d67a048aa5c69a6e0206cc219daa5dc25c56578f38c2cc636763a04469f03cf5",
+    "schemas/network_profile_v01.schema.json": "a4afa26d571daa87ea1610988f49496636000914128b57f67ddf4e4b667c5d9d",
+    "schemas/placement_decision_v01.schema.json": "377cba93df23be0de7bdffee8985aebf076ae15d01bbe731464e6b2054bece4f",
+    "tests/fixtures/p0c_placement/README.md": "eaa4569ee5c5ae699ec681801c40249ca9c39c96c560dc52308025d4306659ae",
+    "tests/fixtures/p0c_placement/dataset.json": "baf8ce185f0a6b27686f2766cd50467eac0c886f733cb8b380f735382d3e14cd",
+    "tests/fixtures/p0c_placement/fixture.txt": "079b0a5c3c39cea089f662283c838069ed029ea8c1f259537082e9e49c58c1c5",
+    "tests/fixtures/p0c_placement/manifest.json": "cf0e8d725f063cf534031ae1d9cb46deb5598ccce017893bc2fc06c4dd8e158c",
+    "tests/fixtures/p0c_placement/public_key.hex": "0321f645f96877d794ca97989e6b1d52da5165ce139695aa705b9c959ebc43ba",
+    "tests/unit/test_p0c_placement.py": "1ca118b3f2ec1325cc52970ea2ffe40ad70695612380d9ce4a766759787351ad"
+  }
+}
